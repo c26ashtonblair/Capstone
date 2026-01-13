@@ -1,0 +1,28 @@
+
+
+
+Security conSiderationS for control SyStemS networkS
+
+Appendix
+A
+
+
+In This Appendix...
+Security Considerations for Control Systems Networks	A-2
+
+Appendix A: Network Considerations for Control Systems
+
+Security Considerations for Control Systems Networks
+Manufacturers are realizing that to stay competitive, their Automation and Control Systems need to be more integrated within their plant. The systems often need to be integrated with upstream Enterprise Data Systems, and even further integrated to allow information to be accessible across multiple plants, or even through the Internet. This convergence of the IT world with the Automation World creates challenges in maintaining secure systems and protecting your investments in processes, personnel, data and intellectual property.
+While Automation Networks and Systems have built-in password protection schemes, this is only one very small step in securing your systems. Automation Control System Networks need to incorporate data protection and security measures that are at least as robust as a typical business computer system. We recommend that users of PLCs, HMI products and SCADA systems perform your own network security analysis to determine the proper level of security required for you application. However, the Department of Homeland Security's National Cybersecurity and Communications Integration Center (NCCIC) and Industrial Control Systems Cyber Emergency Response Team (ICS-CERT) has provided direction related to network security and safety under an approach described as "Defense in Depth", which is published at https://www.us-cert.gov/sites/default/files/recommended_practices/NCCIC_ ICS-CERT_Defense_in_Depth_2016_S508C.pdf.
+This comprehensive security strategy involves physical protection methods, as well as process and policy methods. This approach creates multiple layers and levels of security for industrial automation systems. Such safeguards include the location of control system networks behind firewalls, their isolation from business networks, the use of intrusion detection systems, and the use of secure methods for remote access such as Virtual Private Networks (VPNs). Further, users should minimize network exposure for all control system devices and such control systems, and these systems should not directly face the internet. Following these procedures should significantly reduce your risks both from external sources as well as internal sources, and provide a more secure system.
+It is the user's responsibility to protect such systems, just as you would protect your computer and business systems. AutomationDirect recommends using one or more of these resources in putting together a secure system:
+ï ICS-CERT's Control Systems recommended practices at the following web address: https://ics-cert.us-cert.gov/Recommended-Practices
+ï Special Publication 800-82 of the National Institute of Standards and Technology - Guide to Industrial Control Systems (ICS) Security: https://csrc.nist.gov/publications/detail/sp/800-82/rev-2/final
+ï ISA99, Industrial Automation and Control Systems Security: https://www.isa.org/standards-and-publications/isa-standards/isa-standards-committees/ isa99 (please note this is a summary and these standards have to be purchased from ISA )
+The above set of resources provides a comprehensive approach to securing a control system network and reducing risk and exposure from security breaches. Given the nature of any system that accesses the internet, it is incumbent upon each user to assess the needs and requirements of their application, and take steps to mitigate the particular security risks inherent in their control system.
+
+
+A-2
+
+CLICK PLC Hardware User Manual, 6th Edition, Rev. O - C0-USER-M

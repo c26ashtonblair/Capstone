@@ -1,0 +1,90 @@
+Page 1About This User Guide
+This user guide is intended for a customer who has received a CLICK Loader File from an OEM and needs
+to write the CLICK project to their CLICK PLC using the CLICK Project Loader tool. Writing the CLICK projectto your PLC is a very simple process and this document will walk you through the required steps.
+Note: The file extension of the CLICK Loader File is 'ckl'. This is different from the CLICK Project File, where
+the file extension is 'ckp'. The CLICK Project Loader only works with the CLICK Loader Files.
+What is CLICK Project Loader?
+The CLICK Project Loader is a tool provided with the free CLICK Programming Software (V1.11 or newer).The CLICK Project Loader was developed to provide a simple way for you to write a CLICK Project, providedby an OEM, to your PLC.
+When an OEM develops a CLICK Project for you, this Project may be password protected to protect the
+confidentiality of processes and information included in the Project. It is also common to have futuremodifications to this project that will be provided to you by the OEM. When these Project updates are providedto the customer only authorized personnel with the password information are able to write the file to the PLC.
+With the CLICK Project Loader, an OEM can modify a password-protected CLICK Project and export the
+Project as a CLICK Loader File. The OEM can then send the CLICK Loader File to you.
+You can use the CLICK Project Loader tool to write the password-protected CLICK Project into your CLICK
+PLC. The CLICK Project Loader will verify that the password of the new Project matches the password of theexisting Project in the PLC. The CLICK Project Loader will ONLY write the new Project if the passwordsMATCH.
+What Will You Need?
+1.  A programming cable. You will need a programming cable to connect your personal computer to a
+communications port on your PLC. The cable you use depends on which type of port you areconnecting to on your personal computer.
+If you are connecting to a serial port on your personal computer, use cable part no. D2-DSCBL 
+as shown.CLICK P ROJECT LOADER USERGUIDE
+CLICK CPU
+PC Serial
+Programming Cable
+D2-DSCBLPC
+Page 2If you are connecting to a USB port on your personal computer, use cable assembly no. EA-MG-PGM-CBL 
+as shown.
+The PLC must be powered up when writing the CLICK Project to the PLC. If you have any questions about
+cabling or applying power, see Chapter 1: Getting Started, of the CLICK PLC hardware user manual (C0-USER-M), which is availabe for free download from our website at:
+http://www.automationdirect.com/static/manuals/c0userm/c0userm.html
+2.  CLICK Programming Software. The CLICK Project Loader is included in the CLICK Programming
+Software, so all you need to do is download the latest version and install it on your personal computer. TheCLICK Programming Software is free and available for download from our web site at:
+http://support.automationdirect.com/products/clickplcs.html
+Writing your CLICK Project to your CLICK PLC
+Once you have installed the CLICK Programming Software and connected your personal computer to your
+powered CLICK PLC, you are ready to write the new CLICK Project to the PLC. Make sure the CLICK PLCMode Switch is set to the STOP position.
+Note: Do not open the CLICK Programming Software; the CLICK Project Loader tool can be accessed from the
+Start menu as shown here.
+Note: The CLICK Loader File sent to you is encrypted and you will not be able to open it with the CLICKProgramming Software. You can open the file only with the CLICK Project Loader and write the CLICK Project
+to the CLICK PLC.CLICK Project Loader User Guide
+Serial
+CablePC to Panel Programming
+Cable Assembly
+(Includes serial & USB cables)
+EA-MG-PGM-CBL
+USB to RS232
+Converter
+CLICK CPU
+USB
+CablePC
+Page 3When the CLICK Project Loader is selected, the following window opens.
+There are four Steps to complete the file writing process to the CLICK PLC using this CLICK Project Loader.
+The Steps are identified on the CLICK Project Loader window shown above and described below.
+Step 1 Select the CLICK Loader File: The first step is to select the CLICK Loader File you received from
+the OEM. Click the browse button located on the right side of the Step 1 text field to open the Openwindow shown below.
+Select the CLICK Loader File you received from the OEM.
+Once the CLICK Loader File is selected click on the Open button to accept it. The Step 1 text field will
+display the selected file as shown below.CLICK Project Loader User Guide
+4 Steps
+Page 4Step 2  Configure the PC to PLC Connection: The second step is the setup of the Com Port on the PC. You
+need to have a recommended communication cable to connect the PC to the CLICK PLC (Refer topages 1 and 2 for cabling information). 
+1 PC: Select the COM Port on the PC that will be used to connect to the CLICK PLC. If you are not sure
+which COM Ports are available, click the Detail button. A pop up window will open and display a listof available COM Ports.
+2 PLC: Select the COM Port on the CLICK PLC that will be used to connect to the PC. It is recommended to
+use Port 1 because the setup of Port 1 is fixed. The CLICK Project Loader uses the setupautomatically as shown below.
+When Port1 is selected only the Connection Test button is available. 
+•  Connection Test: The Connection Test button can be used to Test if the CLICK Project Loader can
+communicate with the CLICK PLC.
+When Port2 needs to be used and is selected, the parameters will provide adjustable fields as shown
+below. These fields allow you to adjust the COM Port setup to match the setup of Port 2. 
+When Port2 is selected, there are three buttons available, which will do the following:
+•  Auto Detect: When the communication cable is connected from the PC to the CLICK PLC, use this
+button to make the CLICK Project Loader try to find the CLICK PLC automatically.
+•  Default Setting: Click on this button to reset all the fields to the default values.
+•  Connection Test: The Connection Test button can be used to Test if the CLICK Project Loader can
+communicate with the CLICK PLC.CLICK Project Loader User Guide
+Page 5Step 3   Make a backup file from the PLC?: The CLICK Project Loader has a feature to make a backup copy
+of the CLICK Project and the Firmware currently in the CLICK PLC before writing new ones from theCLICK Loader File. If you want to make a backup copy, select the Yes radio button and click thebrowse button located to the right of the Step 3 field. 
+The Save As window shown below opens and you can enter a file name for the backup file to be 
+Saved As.
+Once the backup file name is entered, click on the Save button to accept it. 
+IMPORTANT NOTE! Do not enter the same file name as the CLICK Loader File you received from the
+OEM. Enter a new file name.
+The Step 3 text field will display the selected file as shown below.
+Note: The file format of this backup file is the same as the CLICK Loader File. Therefore, the backup file cannot
+be opened with the the CLICK Programming Software; it can be only written to the CLICK PLC using the CLICK
+Project Loader.CLICK Project Loader User Guide
+Browse Button
+Page 6Step 4 The last Step is very simple. Once Steps 1, 2 and 3 are completed, click the Start button to Start making
+the backup copy (if selected), update the firmware (if necessary), and write the CLICK Project into theCLICK PLC. The Progress Bar for each of the processes being performed will display as shownbelow, indicating the CLICK Project Loader is busy performing the requested tasks.
+Note: The PLC Mode Switch must be set to the STOP position in order for the CLICK Project Loader to
+proceed. If the PLC Mode Switch is set to RUN position, an error window like the one shown below will display.
+Once all the CLICK Project Loader tasks are completed, the Complete window shown below opens,indicating all tasks Completed successfully.CLICK Project Loader User Guide

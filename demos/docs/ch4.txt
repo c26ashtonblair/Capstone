@@ -1,0 +1,1364 @@
+
+
+
+
+PLC CommuniCations
+
+In This Chapter...
+
+Chapter
+4
+
+Introduction	4-2
+PLC Communication Ports Specifications	4-3
+LED Status Indicators	4-5
+3 Steps to Using the CLICK PLC Communications	4-7
+Typical Communication Applications	4-8
+W-1: Com Port 1 & 2 (RS-232) Wiring	4-12
+W-2: Com Port 1 (Ethernet) Wiring	4-17
+W-3: Com Port 3 Wiring	4-19
+C-1: Com Port 1 (RS-232) Setup	4-20
+C-2: Com Port 1 (Ethernet) Setup	4-21
+C-3: Com Port 2 Setup (Modbus RTU)	4-22
+C-4: Com Port 2 Setup (ASCII)	4-23
+C-5: Com Port 3 Setup (Modbus RTU)	4-24
+C-6: Com Port 3 Setup (ASCII)	4-25
+P-1: Modbus Slave (Server) Programming	4-26
+P-2: Modbus Master Programming (Modbus RTU)	4-29
+P-3: Modbus Client (Modbus TCP) Programming	4-34
+P-4: ASCII Receive Programming	4-40
+P-5: ASCII Send Programming	4-43
+
+Introduction
+This chapter explains the communications ability of the CLICK PLC system for exchanging data between the PLC unit and other connected serial devices. It covers:
+ï Electrical connections used for communications
+ï Networking routing between the PLC and other devices,
+ï Setting the port communication parameters,
+ï Selecting the protocols and the available data addressing types to use, and
+ï Ladder logic program instructions that make it all work together.
+CLICK Basic and Standard PLCs have two built-in RS-232 ports. Both ports are 6-pin RJ12 phone type jacks. Port 1 communication parameters are fixed and is used primarily as the programming port. Port 1 can also be used as a Modbus RTU protocol slave device. Port 2 is a general purpose port, user configurable, with its communication parameters within CLICK Programming Software, C0-PGMSW. Port 2 can be used as a Modbus RTU master or slave protocol device, or handle ASCII data In or Out (ASCII stands for American Standard Code for Information Interchange and defines a character encoding method for text that is used in computers and other communication devices. Details can be found by doing a search for ASCII on the internet).
+Standard and Analog PLC versions also have a 3-pin RS-485 port, Port 3. Like Port 2, Port 3 is a general purpose port with its communication parameters being user configurable from the programming software. Port 3 can be used as a Modbus RTU master or slave protocol device, or handle ASCII data In or Out.
+CLICK Ethernet Basic, Standard and Analog PLC units have one built-in Ethernet communications port and one RS-232 serial communication port. Additionally, Ethernet Standard and Analog PLC units have an RS-485 port.
+The CLICK PLC can be networked to other CLICK PLCs, data input devices (barcode readers, weight scales, etc.), and/or data output devices (serial printers, serial text displays, etc.). It is also possible to network the CLICK PLC to other 3rd party PLCs and devices that have the ability to communicate using the Modbus RTU protocol.
+The final part of the PLC Communications chapter contains explanations and examples of the various ways the Send and Receive programming instructions can be used to perform Modbus RTU protocol and ASCII data communications between devices.
+There are three different data addressing types that can be selected when using the Modbus RTU protocol from the Send and Receive instructions. They are, CLICK addressing, Modbus 984 addressing, or Modbus HEX addressing. The CLICK addressing makes it convenient to exchange data between CLICK PLCs. The other addressing choices are selected based on the Modbus protocol addressing the networked devices are using. For details on the Modbus protocol, visit www.modbus.org.
+
+NOTE: The Modbus RTU Master is identified as the device that controls the exchange of data between itself and any connected slave device. There can only be one master on the network. When the CLICK PLC is the master, it is easily identified. It will be the PLC in the network with the Send and/or Receive instructions using the Modbus protocol in its ladder logic program.
+
+
+PLC Communication Ports Specifications
+The CLICK PLC units have two or three built-in communications ports.
+Basic PLC	Standard and Analog PLCs
+
+
+
+
+Com Port 1
+
+
+Com Port 2
+
+
+
+
+
+
+
+
+Port 1
+
+
+
+Com Port 1
+Com Port 2
+Com Port 3
+
+6 pin RJ12 Phone Type Jack
+
+
+
+
+
+
+Port 2
+6 pin RJ12 Phone Type Jack
+
+
+
+
+
+
+
+
+Port 3
+   3 Pin Terminal Block
+
+PLC Communication Ports Specifications (continued)
+
+
+Ethernet Basic PLC
+
+Ethernet Standard and Analog PLCs
+
+
+
+
+
+Com Port 1
+
+
+Com Port 2
+
+Com Port 1
+
+Com Port 2
+
+Com Port 3
+
+
+Port 1
+8 pin RJ45 Phone Type Jack
+
+
+
+
+
+
+
+
+Port 2
+6 pin RJ12 Phone Type Jack
+
+
+
+
+
+
+
+
+Port 3
+   3 Pin Terminal Block
+
+
+LED Status Indicators
+LED Status Indicators
+There are LED status indicators located to the left of each communication port to indicate port activity or communications.
+
+
+
+ Port 1 & 2 LED Status Indicators
+
+TX1 and TX2 (Green)
+On
+The Comm Port is sending data.
+Off
+The Comm Port is not sending data.
+
+RX1 and RX2 (Green)
+On
+The Comm Port is receiving data.
+Off
+The Comm Port is not receiving data.
+
+
+Port 1, 2, & 3 LED Status Indicators
+
+
+Basic PLC
+
+
+
+
+
+
+
+
+
+
+
+Standard and Analog PLCs
+
+
+
+
+
+
+
+
+
+
+
+DirectLogic Devices That Do Not Work With CLICK PLCs
+The CLICK PLC does not support K-sequence protocol, so the following DirectLogic devices do not work with the CLICK PLC:
+
+
+
+
+D2-HPP
+
+D4-HPP-1
+
+DV-1000
+
+
+LED Status Indicators (continued)
+
+
+ Port 1 & 2 LED Status Indicators
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Port 1, 2, & 3 LED Status Indicators
+
+
+
+Ethernet Standard and Analog PLCs
+
+3 Steps to Using the CLICK PLC Communications
+We offer an easy 3-step method for using the communication features of the CLICK PLC.
+The following pages show the devices that you may connect to the CLICK PLC Com ports. Use the table below to locate information on communications for your particular application. As you can see in the table, each step has subcategories. For each step, find the subcategory description that best describes your application. Use the subcategory references (W-x, C-x, and P-x.) to find more information on these topics in this chapter. See the example below.
+
+CLICK PLC Communications
+Step
+Subcategory Reference
+Subcategory Description
+Page
+Step 1 Wiring
+W-1
+Com port 1 & 2 (RS-232)
+4-12
+
+W-2
+Com port 1 (Ethernet)
+4-17
+
+W-3
+Com port 3 (RS-485)
+4-20
+
+    Step 2 Com Port Setup
+C-1
+Com port 1 (RS-232) setup
+4-21
+
+C-2
+Com port 1 (Ethernet) setup
+4-22
+
+C-3
+Com port 2 setup (Modbus RTU)
+4-23
+
+C-4
+Com port 2 setup (ASCII)
+4-24
+
+C-5
+Com port 3 setup (Modbus RTU)
+4-25
+
+C-6
+Com port 3 setup (ASCII)
+4-26
+
+   Step 3 Programming
+P-1
+Modbus Slave (Server) programming
+4-27
+
+P-2
+Modbus Master programming (Modbus RTU)
+4-30
+
+P-3
+Modbus Client programming (Modbus TCP)
+4-32
+
+P-4
+ASCII Receive programming
+4-36
+
+P-5
+ASCII Send programming
+4-39
+Example:
+To connect a barcode reader that sends ASCII data to Com Port 2:
+
+Refer to these three reference page sections.
+
+
+
+Barcode Reader
+Com Port 2
+
+Typical Communication Applications
+The diagrams on the following four pages illustrate the typical uses for the CLICK PLC's communication ports. Typical serial communication applications are continued on the next three pages.
+Port 1 (RS-232) - Modbus RTU Slave Mode Only
+
+
+
+
+
+
+
+
+Basic, Standard and Analog PLCs
+
+PC	Another CLICK PLC
+
+
+
+
+
+W-1	C-1
+
+C-more and C-more
+Micro-Graphic Panel
+
+
+
+
+
+TIP: C-more Micro-Graphic panels (monochrome models only) can get 5 VDC power from RS-232 Port.
+
+
+C-more Micro-Graphic Panel (Monochrome models only)
+
+
+
+Example
+
+
+
+
+
+
+
+RS-23P2oPrto1rtor 2
+
+
+Port 1
+
+
+
+
+The Color Micro-Graphic panel or the second Monochrome Micro-Graphic panel needs a separate 24 VDC power source (see the note below).
+
+
+
+
+NOTE: CLICK's RS-232 port can provide 5VDC to power one monochrome Micro-Graphic panel. If two C-more Micro-Graphic panels are connected to both ports, then at least one of the panels must be powered by a C-more Micro DC power adapter, EA-MG-P1 or EA-MG-SP1, or another 24VDC power source. Color C-more Micro- Graphic panels must also be powered from a separate 24VDC source.
+
+Port 1 (Ethernet) - Modbus TCP
+
+
+
+	
+
+
+
+
+All Ethernet PLCs
+
+PC	Another CLICK Ethernet PLC
+
+C-more Panel
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+Another CLICK Ethernet PLC
+
+
+
+
+
+SR55 Soft Starter
+
+
+
+
+GS1 Drive
+
+
+
+
+GS3 Drive
+
+ViewMarq Display
+
+
+
+Port 2 (RS-232) - Modbus RTU or ASCII
+
+
+
+
+
+
+
+
+All PLCs
+
+
+Modbus RTU
+
+
+
+PC	Another CLICK PLC
+
+
+
+
+
+ASCII
+
+Devices that SEND ASCII messages
+
+
+Other devices that can send ASCII data.
+
+
+
+
+
+
+C-more and C-more
+Micro-Graphic Panel
+
+
+
+See Note on previous page about connecting a C-more Micro-Graphic panel to RS-232 Port.
+
+
+
+
+
+Barcode
+Reader
+
+Weight Scale
+
+
+  	
+
+	
+
+
+Serial Printer
+
+Serial Text Display
+
+Another CLICK PLC
+
+
+  	  
+
+Port 3 (RS-485 - Modbus RTU or ASCII)
+
+
+
+
+
+Modbus RTU
+
+
+
+
+	
+
+ Standard,Analog and Ethernet PLCs
+
+PC	Another CLICK PLC
+
+
+
+
+
+ASCII
+Devices that SEND ASCII messages
+
+
+
+
+C-more and C-more
+Micro-Graphic Panel
+
+
+
+
+
+
+Barcode Reader
+
+
+
+
+Weigh Scale
+
+
+Other devices that can send ASCII data.
+
+W-3
+
+
+  	
+
+
+
+
+
+
+
+
+Serial Printer
+
+Serial Text Display
+
+
+Another CLICK PLC
+
+
+SOLO Temperature Controller
+
+
+  	  
+
+
+W-1: Com Port 1 & 2 (RS-232) Wiring
+Com Port 1 and Com Port 2 have very similar pin layouts; the only difference is that Port 2 has a RTS signal output, which Port 1 does not have.
+
+
+
+6 pin RJ12 Phone Type Jack
+
+6 pin RJ12 Phone Type Jack
+
+
+
+
+
+
+
+
+
+NOTE: Both Com ports can provide 5VDC; however, the 5VDC power can be used only for the C-more Micro- Graphic panel. AutomationDirect does not guarantee that the CLICK PLC will work correctly when any other device uses 5VDC from these Com ports. Please also remember these Com ports can provide enough power only for
+one C-more Micro-Graphic panel. If you are going to connect a C-more Micro-Graphic panel to each Com port (2 panels in total), you must obtain power from a separate 5VDC power source for the second C-more Micro-Graphic panel.
+
+Wiring Strategy
+The following pages cover five case scenarios for connecting com ports 1 or 2:
+Case 1: Connect Com Port 1 or 2 to a PC.
+Case 2: Connect Com Port 1 or 2 to another CLICK PLC.
+Case 3: Connect Com Port 2 to a C-more or C-more Micro-Graphic panel. Case 4: Connect Com Port 2 to an RS-232 port on another device.
+Case 5: Connect Com Port 1 or 2 to an RS-422 or RS485 port on another device(s).
+
+
+Case 1: Connect Com Port 1 or 2 to a PC.
+You can connect Com Port 1 or 2 to a serial com port or USB port on the PC.
+1. Connect to a serial port
+
+
+2. Connect to a USB port
+
+
+
+
+Case 2: Connect Com Port 1 or 2 to another CLICK PLC
+
+You can use cable D0-CBL.
+In this configuration, one of the CLICK PLC units needs to be the network master and the other is the network slave. Connect the D0-CBL on Com Port 2 on the master PLC unit side.
+
+Case 3: Connect Com Port 1 or 2 to a C-more or C-more Micro-Graphic panel
+Please use the following cables to make your connections.
+
+C-more Graphic Panel
+Cable Part Number
+C-more Touch panels
+EA-2CBL (3m) or OP-2CBL (2m)
+
+C-more Micro-Graphic Panels
+DV-1000CBL if the panel receives 5VDC power from the CLICK PLC com port. (Monochrome panels only; color panels must be powered from a separate 24VDC power source. Please refer to the note on page 4-6 for details.)
+
+EA-2CBL (3m) or OP-2CBL (2m) if the panel receives 24VDC power from other source.
+
+
+
+Case 4: Connect Com Port 1 or 2 to an RS-232 port on another device
+You need to cross the RTD and TXD signal lines and connect 0V on both com ports.
+
+
+CLICK Com
+Port 1 or 2
+
+
+RS-232 Port on Another Device
+0V
+
+	 RXD
+	 TXD
+
+
+You can make your own cable. However, we offer two products that make your wiring much easier:
+1. ZIPLink feed-through module and cable
+
+
+
+
+
+
+
+
+
+
+
+2. ZIPLink pig-tail cable
+
+
+
+Case 5: Connect Com Port 1 or 2 to an RS-422 or RS485 port on another device(s).
+You need a RS-232 to RS-422/485 converter in this case. We recommend our FA-ISOCON as the converter.
+
+The recommended cables to connect the FA-ISOCON to other devices:
+ï Belden 8103 for the RS-422
+ï Belden 9842 for 2-wire RS-485
+ï Belden 9843 for 4-wire RS-485
+
+
+W-2: Com Port 1 (Ethernet) Wiring
+Com Port 1 (Ethernet) supports 10/100 Base-T Ethernet with an RJ-45 style connector.
+
+
+8 pin RJ45 Phone Type Jack
+
+
+
+
+
+
+
+
+You can use both straight and cross over cables with Com Port 1.
+Wiring Strategy
+ï There are two wiring methods to connect to devices which support Modbus TCP protocol.
+ï Case 1: Connect Com Port 1 to a device that supports Modbus TCP protocol directly such as a PC.
+ï Case 2: Connect Com Port 1 to other devices that support the Modbus TCP protocol via a switch or hub.
+Case 1: Connect Com Port 1 to a device that supports the Modbus TCP protocol directly such as a PC.
+In this illustration an Ethernet PLC unit is connected directly to a PC.
+
+
+
+Case 2: Connect Com Port 1 to other devices that support the Modbus TCP (client/server) protocol via a switch or hub.
+
+
+
+
+NOTE: Com Port 1 can communicate with any number of servers (slaves) using the Receive and/or Send instructions. However, Com Port 1 can communicate with up to 4 servers at the same time. If the ladder program has sent a message to 4 different servers and tries to send a message to another server, the CLICK PLC unit disconnects the first server and establishes a connection with the new server, maintaining a total of 4 servers.
+
+
+NOTE: Com Port 1 can communicate with up to 3 clients (masters). If a client attempts to establish communication with Com Port 1 while it is communicating with 3 clients, the CLICK PLC unit replies with an error to the forth client.
+
+
+W-3: Com Port 3 Wiring
+
+Com Port 3 supports 2-wire RS-485.
+  3 Pin Terminal Block
+
+
+
+
+
+
+
+Wiring Strategy
+You need to connect all + signal terminals in the network together. You will also need to connect all - signal terminals together. It is optional to connect the logic ground.
+
+
+
+
+
+CLICK
+Com Port 3
+RS-485
+  + - LG
+
+
+RS-485 Port on another device
+
+ + - LG
+
+
+RS-485 Port on another device
+
+ + - LG
+
+
+Add a termination resistor between the
++ and - terminals on the last device.
+
+Optional (Some devices may not have this terminal.)
+Add a termination resistor between the + and - terminals on Port 3.
+
+NOTE: The resistance of the termination resistors needs to match the impedance of the communication cable.
+
+
+
+NOTE: Use a repeater if connecting more than 32 slaves to Port 3.
+
+
+C-1: Com Port 1 (RS-232) Setup
+Com Port 1 has a fixed setup as shown below. This com port works as a Modbus RTU slave only. If you want to connect an external device to this com port, please make sure the external device can be a Modbus RTU master and that the com port setup matches the following setup.
+
+
+
+C-2: Com Port 1 (Ethernet) Setup
+Wiring Strategy
+Before you set up this communication port, you must connect a PC loaded with CLICK programming software to the CLICK PLC Port 1 using an Ethernet cable or to the CLICK PLC Port 2 using a D2-DSCBL or EA-MG-PGM-CBL programming cable. Refer to Chapter 1: Getting Started for step-by-step instructions on this connection. Once the PC and programming software are online with the CLICK PLC, select the Function tab located in the Navigation window and double click "Com Port 1 Setup" as shown below.
+
+The Com Port Setup Details
+dialog box will come into view as shown below
+
+NOTE: The communication port settings are saved in the project file. The project must be transferred to the CLICK PLC in order for any port setting changes to take effect.
+
+
+C-3
+
+C-3: Com Port 2 Setup (Modbus RTU)
+Before you set up the communication ports you must connect the PC with the CLICK programming software to the CLICK PLC Port 1 using a D2-DSCBL or EA-MG-PGM-CBL programming cable. Refer to Chapter 1: Getting Started for step-by-step instructions for this connection. Once the PC and programming software are online with the CLICK PLC, click the Function tab located in the Navigation window and double click Com Port2 Setup as shown below.
+
+
+
+
+
+Select the Function tab, then double click Com Port2 Setup.
+
+
+
+
+
+The Com Port Setup Details dialog box will come into view as shown below.
+
+
+
+
+
+Set up the parameters to match other devices in the same network.
+
+
+Select Modbus.
+
+
+
+
+
+Make any adjustments here to eliminate Com errors.
+
+
+Click the Help button for Com Port Setup Details online help.
+
+
+
+
+Find the Basic Configuration section in the dialog box and set up the parameters to match other devices in the same network. The dialog box also has a section named Advanced Configuration. You may need to make adjustments to these parameters to overcome communication errors which may occur.
+
+TIP : The communication port settings are saved in the project file. The project must be transferred to the CLICK PLC in order for any port setting changes to take effect.
+
+
+C-4: Com Port 2 Setup (ASCII)
+Before you set up the communication ports you must connect the PC with the CLICK programming software to the CLICK PLC Port 1 using a D2-DSCBL or EA-MG-PGM-CBL programming cable. Refer to Chapter 1: Getting Started for step-by-step instructions for this connection. Once the PC and programming software are online with the CLICK PLC, click the Function tab located in the Navigation window and double click Com Port2 Setup as shown below.
+
+
+
+
+Select the Function tab, then double click Com Port2 Setup.
+
+
+
+
+The Com Port Setup Details dialog box will come into view as shown below.
+
+
+
+
+
+Set up the parameters to match the device connected to Port 2.
+
+Select ASCII.
+
+
+
+
+
+Make any adjustments here to eliminate com errors.
+
+
+Click the Help button for Com Port Setup Details online help.
+
+
+
+
+Find the Basic Configuration section in the dialog box and set up the parameters to match the device connected to Port 2. The dialog box also has a section named Advanced Configuration. You may need to make adjustments to these parameters to overcome communication errors which may occur.
+
+TIP: The communication port settings are saved in the project file. The project must be transferred to the CLICK PLC in order for any port setting changes to take effect.
+
+
+C-5
+
+C-5: Com Port 3 Setup (Modbus RTU)
+Before you set up the communication ports you must connect the PC with the CLICK programming software to the CLICK PLC Port 1 using a D2-DSCBL or EA-MG-PGM-CBL programming cable. Refer to Chapter 1: Getting Started for step-by-step instructions for this connection. Once the PC and programming software are online with the CLICK PLC, click the Function tab located in the Navigation window and double click Com Port3 Setup as shown below.
+
+
+
+
+
+Select the Function tab, then double click Com Port3 Setup.
+
+
+
+
+The Com Port Setup Details dialog box will come into view as shown below.
+
+
+
+
+
+Set up the parameters to match other devices in the same network.
+
+
+Select Modbus.
+
+
+
+
+
+Make any adjustments here to eliminate com errors.
+
+
+Click the Help button for Com Port Setup Details online help.
+
+
+
+
+
+Find the Basic Configuration section in the dialog box and set up the parameters to match other devices in the same network. The dialog box also has a section named Advanced Configuration. You may need to make adjustments to these parameters to overcome communication errors which may occur.
+
+TIP: The communication port settings are saved in the project file. The project must be transferred to the CLICK PLC in order for any port setting changes to take effect.
+
+
+C-6: Com Port 3 Setup (ASCII)
+Before you set up the communication ports you must connect the PC with the CLICK programming software to the CLICK PLC Port 1 using a D2-DSCBL or EA-MG-PGM-CBL programming cable. Refer to Chapter 1: Getting Started for step-by-step instructions for this connection. Once the PC and programming software are online with the CLICK PLC, click the Function tab located in the Navigation window and double click Com Port3 Setup as shown below.
+The Com Port Setup Details dialog box will come into view as shown below.
+
+
+
+
+Select the Function tab, then double click Com Port3 Setup.
+
+
+
+
+
+Find the Basic Configuration section in the dialog box and set up the parameters to match the device connected to Port 3.
+
+
+
+Select ASCII.
+
+Set up the parameters to match the device connected to Port 3.
+
+
+
+
+Click the Help button for Com Port Setup Details online help.
+
+
+
+TIP: The communication port settings are saved in the project file. The project must be transferred to the CLICK PLC in order for any port setting changes to take effect.
+
+
+P-1: Modbus Slave (Server) Programming
+Ladder Program
+To use a CLICK PLC as a Modbus slave (server), you don't need any special ladder program. Set up the communication port properly and you just need an End instruction in the ladder program to put the PLC in Run mode.
+
+
+However, you can add any additional ladder program to let the slave CLICK PLC control something by itself. For instance, you may want to shut down the outputs on the slave (server) CLICK PLC should it lose communication with the Modbus master (client).
+
+NOTE: The Modbus master can communicate with the Modbus slave CLICK PLC without any ladder program. However, output points on the Modbus slave CLICK PLC cannot be turned on if the PLC is not in the Run mode. Because of this, we recommend having at least one End instruction and to put the PLC in Run mode.
+	
+
+Lost Communication Situation
+You may want to detect if there is something happening at the Modbus master side that stops communication with the Modbus slaves. Or, the communication cable might have been disconnected. In this situation, you may want the Modbus slaves to take an action. For instance, you may want to shut down the outputs on the slave CLICK PLC when the communication with the Modbus master is lost. We offer an easy method to accomplish this.
+The CLICK keeps counting how long it has been since each com port received a message from the Modbus master, and enters the time duration in the following system data registers.
+
+System Data Registers
+System Data Register
+Nickname
+Range
+SD41
+_Port1_No_Comm_Time
+0 - 32767 (sec)
+SD51
+_Port2_No_Comm_Time
+0 - 32767 (sec)
+SD61
+_Port3_No_Comm_Time
+0 - 32767 (sec)
+Each register is reset to zero automatically when the com port receives a message from the Modbus master. Then its value increments by 1 per second until the com port receives another message from the Modbus master. If one of these registers has 60 as its value, it means the com port has not received any message from the Modbus master for 60 seconds. You can use this info to shut down the outputs on the slave CLICK PLC. Here is an example program.
+
+
+
+Modbus Addressing
+Each of the memory addresses in the CLICK (X1, DS1, etc.) has a unique Modbus address. This means the network master in the Modbus network can access any memory address in the slave CLICK PLC. The best way to check which Modbus address is assigned to a particular CLICK memory address is to use the CLICK programming software.
+Click the Program tab located in the Navigation window and double click Address Picker as shown below.
+After the Address Picker window opens, check the option Display MODBUS Address on the right bottom.
+
+
+
+Select the Program tab, then double click Address Picker.
+
+
+
+
+
+
+
+
+
+Exception Response (Exception Code)
+When the slave CLICK PLC receives a request from the Modbus master that it cannot respond to, the slave CLICK PLC sends an exception response to the Modbus master. The CLICK PLC supports the following Exception Responses.
+
+Exception Response (Exception Code)
+Code
+Name
+Details of Exception Response
+01
+Illegal Function
+The CLICK PLC does not support the function code received from the MODBUS master.
+02
+Illegal Data Address
+The MODBUS master tried to access to an invalid address.
+
+03
+
+Illegal Data Value
+The data length is zero or exceeds the maximum size.
+
+
+The data for Write Single Coil is not FF00h (ON) or 0000h (OFF).
+
+
+The PLC mode change request from the MODBUS master is not valid.
+
+04
+
+
+Slave Device Failure
+Password is locked.
+
+
+When the PLC mode switch is in STOP position, the MODBUS master requested to switch to RUN mode.
+
+
+When the PLC mode switch is in RUN position, the MODBUS master requested to switch to the Firmware Update mode.
+
+P-2: Modbus Master Programming (Modbus RTU)
+Instructions
+The CLICK PLC has two instructions to exchange data with external Modbus devices through the com ports; the Receive and Send instructions.
+ï Receive instruction: Read data from an external Modbus device.
+ï Send instruction: Write data to external Modbus device(s).
+To use these instructions, double click Receive or Send in the Instruction List window as shown below.
+
+Instruction List
+
+Double click Receive or Send in the Instruction List to use it in the ladder program.
+
+
+
+
+
+
+
+
+Select the Com Port that you are going to use and confirm the Protocol is MODBUS.
+
+Select the Com Port to use.
+
+Protocol needs to be MODBUS.
+
+If the Protocol is not MODBUS, click the Com Port Setup button to open the Com Port Setup Details window and change the Protocol to MODBUS. If the Protocol selection is grayed out as shown below, it means the Com Port is used by another Receive and/or Send instruction in the ladder program. You cannot change the Protocol setup until you delete those instructions.
+
+
+When you open the Receive or Send instruction in the Modbus mode, their windows should look like this. For the explanation of each setup parameter, please click the Help button on the bottom right.
+
+
+Com Port Status Indicators
+The CLICK PLC has the following System Control Relays to indicate the status of the Com Ports. If monitoring these bits in ladder, they should be monitored at a ladder location prior to the Receive or Send instructions for the port. w
+
+System Control Relays
+Address
+Nickname
+Description
+SC100
+_Port_2_Ready_Flag
+On when Port 2 is ready.
+SC101*
+_Port_2_Error_Flag
+On when Port 2 has a communication error.
+SC102
+_Port_3_Ready_Flag
+On when Port 3 is ready.
+SC103*
+_Port_3_Error_Flag
+On when Port 3 has a communication error.
+* Errors that will cause SC101 or SC103 error flag to turn on:
+ï Parity Error
+ï Frame Error
+ï Time Out
+ï CRC Error
+ï Modbus Exception Response
+
+Example Program
+The ladder program to use these Receive and Send instructions are easy. You just need one NO (Normally Open) contact instruction to check if the com port is ready to receive or send data.
+
+
+Interlocking
+If you are going to use more than one Receive and/or Send instruction with a serial communication port, you need to be sure only one of the instructions is enabled at any point during the operation. The technique to execute more than one Receive and/or Send instructions in order is called 'Interlocking'. When the Interlocking sample program below is executed, the two Receive instructions and two Send instructions are executed one by one.
+
+Example Program: Interlocking with Two Slaves
+In this example, Port 3 on the CLICK PLC unit communicates with two MODBUS slaves. The slave IDs (node numbers) are 1 and 2. The CLICK PLC unit executes one Receive instruction and one Send instruction with each MODBUS slave.
+
+
+
+
+
+
+
+
+
+
+Port 3
+
+
+1. Execute the Receive instruction.
+2. Execute the Send instruction.
+3. 
+Execute the Receive instruction.
+4. Execute the Send instruction.
+
+
+
+Continue this cycle.
+
+Example Program: Interlocking with Two Slaves (Continued)
+
+
+
+
+
+
+Example Program: Interlocking with Two Slaves (Continued)
+
+
+
+
+
+
+
+P-3: Modbus Client (Modbus TCP) Programming
+Instructions
+The CLICK PLC has two instructions to exchange data with Modbus servers through the Com Port 1; the Receive and Send instructions.
+ï Receive instruction: Read data from external Modbus server.
+ï Send instruction: Write data to external Modbus server(s).
+To use these instructions, double click Receive or Send in the Instruction List window as shown below.
+
+Select Com Port 1 that you are going to use.
+
+
+Select Com Port 1
+
+
+When you open the Receive or Send instruction in the Modbus mode, their windows should look like this. For the explanation of each setup parameter, please click the Help button on the bottom right.
+
+Com Port Status Indicators
+The CLICK PLC has the following System Control Relays to indicate the status of Com Port 1.
+
+System Control Relays
+Address
+Nickname
+Description
+SC90
+_Port_1_Ready_Flag
+ON when Port 1 is ready.
+SC91
+_Port_1_Error_Flag
+ON when Port 1 has a communication error.
+SC92
+_Port_1_Clients_Limit
+ON when Port 1 is communicating with 3 clients.
+SC93
+_Port_1_IP_Resolved
+ON when Port 1 obtains an IP address.
+SC94
+_Port_1_Link_Flag
+ON when Port 1 is connected to an Ethernet netwrok.
+SC95
+_Port_1_100MBIT_Flag
+ON when Port 1 is communicating at 100Mbps.
+
+
+Example Program
+The ladder program to use these Receive and Send instructions are easy. You just need one NO (Normally Open) contact instruction to check if the com port is ready to receive or send data.
+
+
+
+
+Interlocking
+If you are going to use more than one Receive and/or Send instruction with the same server(slave), you need to be sure only one of the instructions is enabled at any point during the operation. The technique to execute more than one Receive and/or Send instructions in order is called 'Interlocking'. When the Interlocking sample program below is executed, one Receive instruction and one Send instruction is executed one-by-one for each server.
+
+Example Program: Interlocking with Two Servers
+
+
+
+
+
+
+
+
+
+Port 1
+
+
+
+
+1. Execute the Receive instruction.
+2. Execute the Send instruction.
+Continue these steps.
+1. 
+Execute the Receive instruction.
+2. Execute the Send instruction.
+Continue these steps.
+
+
+
+
+NOTE: Port 1 can establish the connection with up to 4 servers at the same time.
+
+
+Example Program: Interlocking with a Server (Continued)
+
+
+
+
+Example Program: Interlocking with a Server (Continued)
+
+
+
+
+P-4: ASCII Receive Programming
+Instruction
+The Receive instruction allows the CLICK PLC to read ASCII message from an external device. To use this instruction, double click Receive in the Instruction List window as shown below.
+
+Instruction List
+
+Double click Receive in the Instruction List to use it in the ladder program.
+
+
+
+
+
+
+
+
+Select the Com Port that you are going to use and confirm the Protocol is ASCII.
+
+Select the Com Port to use.
+
+Protocol needs to be ASCII.
+
+
+If the Protocol is not ASCII, click the Com Port Setup button to open the Com Port Setup Details window and change the Protocol to ASCII. If the Protocol selection is grayed out as shown below, it means the Com Port is used by another Receive and/or Send instruction in the ladder program. You cannot change the Protocol setup until you delete those instructions.
+
+
+
+When you open the Receive instruction in the ASCII mode, the window should look like this. For the explanation of each setup parameter, please click the Help button on the bottom right
+
+
+
+
+
+
+
+
+
+
+
+
+Click the Help button to get the detailed information of this setup window.
+
+
+
+
+
+
+
+Example 1: Read ASCII message from a barcode reader.
+With the following example program, when C1 is ON, the Receive instruction is activated and Com Port 2 waits for an ASCII message from the barcode reader. When Com Port 2 receives an ASCII message and it includes the termination character (CR = Carriage Return in this example), C2 is turned on and the received ASCII message is copied to TXT1 address.
+
+
+
+
+Example 2: Retrieve numerical data from the received ASCII message.
+
+
+Barcode Reader
+A
+B
+C
+CR
+
+
+
+Copied
+
+
+       System Data Register SD50  stores the number of received
+characters for Port 2.
+
+
+
+
+When numerical data is included in the received ASCII message, you may want to retrieve the numerical data and copy into a data register. The Copy instruction can be used for this purpose.
+In this example, received ASCII message is stored in TXT1 to TXT6. This ASCII message includes numerical data '1.23' as ASCII characters from TXT3 to TXT6. The Copy instruction converts those ASCII characters into the equivalent numerical data and copies into data register DF1.
+
+Use Pack Mode
+
+
+
+
+
+The Send instruction allows the CLICK PLC to send ASCII messages to an external device. To use this instruction, double click Send in the Instruction List window as shown below.
+Select the Com Port that you are going to use and confirm the Protocol is ASCII.
+Instruction List
+
+Double click Send in the Instruction List to use it in the ladder program.
+
+
+
+
+
+
+
+
+If the Protocol is not ASCII, click the Com Port Setup button to open the Com Port Setup Details window and change the Protocol to ASCII. If the Protocol selection is grayed out as
+
+Select the Com Port to use.
+
+Protocol needs to be ASCII.
+
+shown below, it means the Com Port is used by another Receive and/or Send instruction the ladder program. You cannot change the Protocol setup until you delete those instructions.
+
+
+
+
+
+
+When you open the Send instruction in the ASCII mode, the window should look like this. For the explanation of each setup parameter, please click the Help button on the bottom right.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Click the Help button to get detailed information on this setup window.
+
+
+
+
+
+
+
+
+Example: Send ASCII message to a serial printer.
+With the following example program, when status of C1 changes from OFF to ON, the Send instruction sends ASCII message 'ABC' and the termination character (CR = Carriage Return in this example). C2 is turned on when sending the ASCII message is completed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

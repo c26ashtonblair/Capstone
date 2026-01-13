@@ -1,0 +1,37 @@
+CLICK PLC User Manual
+Please include the Manual Number and the Manual Issue, both shown below, 
+when communicating with T echnical Support regarding this publication.
+Manual Number:  C0-USER-M
+Issue:    6th Edition, Rev. O
+Issue Date:   2/2025
+Publication History
+Issue Date Description of Changes
+1st Edition 5/08 Original
+Rev. A 10/08 Updated specifications and drawings throughout manual.
+2nd Edition 5/09 Added Port 3 and C0-02DD1-D, C0-02DD2-D, C0-02DR-D analog CPU units.
+Rev. A 8/09 Updated wiring diagram for C0-02DR-D CPU module.
+3rd Edition 10/10 Added four Standard CPUs and C0-08NE3 and C0-16NE3 24VAC input modules
+Rev. A 11/10 Revised current consumption specification for Standard and Analog CPUs.
+4th Edition 6/13 Added 11 I/O modules: 3 discrete combo, 4 analog in, 2 analog out, 2 analog combo.
+Rev. A 10/13 Added 11 I/O modules: 3 discrete combo, 4 analog in, 2 analog out, 2 analog combo.
+5th Edition 12/15 Added eight CLICK PLC units with built-in Ethernet
+Rev. A 4/17Added Interlocking examples to Chapter 4, software and firmware updates, and other misc. 
+minor corrections.
+6th Edition 11/17 Added twelve CLICK Ethernet Analog PLC units.
+Rev. A 10/03/18 Added detailed information on high-speed operations and configurations.
+Rev. B 10/18/18 Updated high-speed module specifications.
+Rev. C 4/10/19 Added EtherNet/IP Implicit and Explicit (adapter server) in S/W
+Rev. D 5/2/19ZIPLink modules ZL-LTB16-24 and ZL-LTB32-24 have been obsoleted and replaced by 
+ZL-LTB16-24-1 and ZL-LTB32-24-1 respectively. 
+Rev. E 7/11/19 Added Error 108 to Error Table page 6-12.
+Rev. F 9/18/19 Added CLICK PID features.
+Rev. G 2/20Added specs for C0-08SIM, C0-04TRS-10, C0-08TR-3, and terminal block C0-8TB-1.  
+Added network security notice as Appendix A.
+Rev. H 3/21 Clarified descriptions of XD and YD registers on page 2-16.
+Rev. I 9/21 Removed varistors from drawings of the internal circuits on Relay Output CPUs.
+Rev. J 10/21 Clarified lack of Power LED indicator on analog I/O modules.
+Rev. K 11/22 Updated copyright.
+Rev. L 12/22 Added “Silent Install” feature. Removed Type 1 Fonts.
+Rev. M 4/23 Changed references to CLICK software media from CD to USB.
+Rev. N 5/24 Clarified current limitations on relay outputs when using ZIPLink wiring system.
+Rev. O 2/25 Added C0-04POT module.

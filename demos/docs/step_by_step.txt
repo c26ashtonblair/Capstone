@@ -1,0 +1,14 @@
+Step 1: Gain Initial access into target network
+Action: Assume we have initial access via RDP
+Step 2: Gain further permissions with in network/system
+Action: Steal or falsify Valid user credentials assume this is already completed
+Step 3: Establish persistence
+Action: Assume we have this done after initial
+Step 4: Map the network
+Action: go through and identify the to two laptops connected by ethernet that are connected to the PLC
+Step 5: Identify target OT systems
+Action: On this network the targets we have discovered programming computer which is connected to a PLC
+Step 5: Create a plan of attack based off the targets identified
+Action: Take control of HMI and change it without the User knowing, change the program on the programming computer, or hack the mod bus and flip bits
+Step 6: Execute Attacks i.e. shutdowns, data collections, modify systems
+Action: attempt to execute the HMI attack by modifying the system so that when the switch is on it rapidly turns the output light on and off till it breaks

@@ -1,0 +1,638 @@
+Troubleshoo Ting666ChapterChapterChapterIn This Chapter...
+Troubleshooting Direction  ........................................................................................................ 6–2
+PLC unit Troubleshooting  .......................................................................................................... 6–3
+Power Supply Troubleshooting  ................................................................................................ 6–5
+I/O Module Troubleshooting  ..................................................................................................... 6–6
+Troubleshooting Electrical Noise Problems  ...................................................................... 6–10
+Error Codes  ................................................................................................................................. 6–11Troubleshooting Direction
+Use this section to figure out where to start when troubleshooting CLICK PLC problems.
+Problem with 
+power supply ?
+Go to
+Page 6-5Problem with 
+PLC unit ?
+Go to
+Page 6-3Problem with I/O 
+modules ?
+Go to
+Page 6-6
+CLICK PLC Hardware User Manual , 6th Edition, Rev. O  – C0-USER-M6–2
+Chapter 6: TroubleshootingPLC unit Troubleshooting
+PLC unit issues are grouped according to their function.  Use the illustration below to find the 
+appropriate document page numbers for issues with different PLC unit functions.
+T oggle Switch
+Switch is in RUN position
+When the toggle switch is in the RUN position, the PLC unit should normally be in Run 
+mode (indicated by the RUN LED being ON), unless the PLC has been placed in Stop mode 
+by a peripheral device through one of the communication ports.  To put the PLC unit in Run 
+mode, move the toggle switch to the STOP position and then switch it back again to the RUN 
+position.  If the RUN LED then remains off, check the PWR and ERR LED indicators per the 
+chart shown below.
+Switch is in STOP position
+When the toggle switch is in STOP position, the PLC unit should be in Stop mode (indicated 
+by the RUN LED being OFF).  Cycle power to the PLC.  If the PLC unit starts up in Run 
+mode, with toggle switch in STOP position, it means the PLC unit does not recognize the 
+toggle switch position correctly.  Please replace the PLC unit.
+C0-00DD1- D Problem with
+toggle switch ?
+Go to
+Page 6-3
+Problem with
+LED indicators ?
+Go to
+Page 6-4Problem with I/O?
+Go to
+Page 6-6
+LED Status* Necessary action
+PWR OFF There is insufficient power for the PLC unit.  Check the power cable and input voltage.
+ERR ONThere is an error in the PLC unit.  Connect the CLICK programming software to read the error 
+information.  See the “Error Codes” section at the end of this chapter for error message instructions.
+*  If you see LED indications different from the ones shown in this table, refer to the “LED Indicators Troubleshooting” section for 
+further explanations.
+CLICK PLC Hardware User Manual , 6th Edition, Rev. O  – C0-USER-M6–3
+Chapter 6: TroubleshootingLED Indicators
+The CLICK PLC performs many pre-defined diagnostic routines with every PLC scan, using 
+onboard diagnostics that can detect various errors or failures in the PLC.  LEDs on the face of 
+the PLC will indicate for specific errors.
+The 3 LEDs located next to the RUN/STOP switch power, (PWR, RUN and ERR) indicate 
+the status of the PLC unit.  The remainder of the LED indicators are discussed in later sections 
+of this chapter:
+• TX1/RX1/TX2/RX2/TX3/RX3 & LINK/ACT – Chapter 2
+• LED indicators for I/O – Chapter 2LED Status Meaning Necessary action
+PWROnThe PLC is powered 
+correctly.No action is necessary.
+BlinkingThe PLC input power 
+is not sufficient.Check the voltage on the terminal located on the bottom of the PLC.  The input voltage should be 
+20-28 VDC.  Also check the power input wiring & terminal connections.  The power supply may 
+need to be replaced.
+OffThere is no power to 
+the PLC.Check the voltage on the terminal located on the bottom of the PLC.  The input voltage should be 
+20-28 VDC.  Also check the power input wiring & terminal connections.  The power supply may 
+need to be replaced.
+RUNOnThe PLC is in RUN 
+mode.If the toggle switch next to the LED indicators is in RUN position, no action is necessary.  If the 
+toggle switch is in STOP position, cycle power the PLC.  If the PLC unit starts up in Run mode, it 
+means that the PLC unit does not recognize the toggle switch position correctly, and the PLC 
+unit must be replaced.
+BlinkingThe PLC is initializing 
+the  
+C0-04RTD or  
+C0-04THM.When a C0-04RTD or C0-04THM is installed in the CLICK PLC system, the RUN LED blinks for up 
+to 11 seconds to indicate that the PLC unit is initializing the analog input module after power-up.  
+If the RUN LED keeps blinking after the initial 11 seconds, power cycle the CLICK PLC system.  If 
+the symptom remains, replace the PLC unit and/or the analog input module.
+OffThe PLC is in STOP 
+mode.If the toggle switch next to the LED indicators is in STOP position, no action is necessary.  If 
+the switch is in RUN position and you want to put the PLC unit in Run mode, toggle the switch 
+to STOP position and then back to RUN position.  If the RUN LED stays off, connect the CLICK 
+programming software to read the error information.  See the “Error Codes” section at the end 
+of this chapter for error message instructions.
+ERROn There is an error.Connect the CLICK programming software to check the error.  See the “Error Codes” section at 
+the end of this chapter for error message instructions.
+Blinking There is a warning.Warnings do not prevent the PLC unit from running.  However, you should check what warnings 
+are active.  Connect the CLICK programming software to read the warning information.  See the 
+“Error Codes” section at the end of this chapter for error message instructions.
+Off There is no error. No action is necessary.
+Errors (ERR LED on)  
+Errors which may cause the system to function improperly, perhaps causing a safety problem.  The PLC will automatically switch from RUN Mode 
+to STOP Mode.  (In STOP Mode all outputs are turned off.) If the PLC is already in STOP Mode when an error is detected, the PLC will not allow a 
+transition to RUN Mode until the error has been corrected.   
+Examples of errors:
+• I/O module error  
+• System configuration error  
+• Memory check error  
+• Project file error
+Warnings (ERR LED blinking)  
+Warnings that require attention, but do not cause improper operation.  They do not cause or prevent any PLC mode transitions.  The application 
+program can use system control bits to detect warnings, and even take the system to an orderly shutdown or switch the PLC to STOP Mode if 
+desired.  Examples of warnings:
+• Lost SRAM data  
+• Battery low voltage
+CLICK PLC Hardware User Manual , 6th Edition, Rev. O  – C0-USER-M6–4
+Chapter 6: TroubleshootingPower Supply Troubleshooting
+When the PWR LED is ON, the CLICK PLC is receiving enough power for operation.  Verify 
+the power input voltage at the bottom connector on the PLC unit; the input voltage should 
+be 20–28 VDC.
+The input voltage measures less than 20VDC
+Remove the bottom connector from the CLICK PLC unit and measure the voltage again.  
+If the voltage at the connector then measures more than 20VDC, the power supply cannot 
+provide enough current for the CLICK PLC.  Replace the power supply with a higher output 
+current power supply.  Check the power budget to determine the current required from the 
+power supply (see below).
+If the voltage still measures less than 20VDC with the connector removed from the PLC, 
+and the power supply voltage is not adjustable, then the power supply cannot be used for the 
+CLICK PLC.  Replace the power supply with another one.
+The input voltage measures greater than 28VDC
+If the output current of the power supply is adjustable, decrease the output voltage.  If the 
+output voltage cannot be lowered to less than 28VDC, replace the power supply with another 
+one.
+How to check the power budget
+You can use the programming software to check the power budget of the CLICK PLC:
+• Connect the PLC to a computer running the CLICK programming software.
+• From the software menus, connect the software to the 
+PLC by selecting PLC and Connect...
+• From the software menus, select Setup and System Configuration...
+• The System Configuration Setup window opens, and displays the Power Budget 
+in milliamps (mA) required by the PLC system.  The PLC power supply must 
+be capable of providing more current than the Power Budget amount.
+CLICK PLC Hardware User Manual , 6th Edition, Rev. O  – C0-USER-M6–5
+Chapter 6: TroubleshootingI/O Module Troubleshooting
+First, check the status of the PWR LED indicators on the I/O modules.  If the PWR LED on 
+the PLC unit is on, but there are I/O modules which have PWR LEDs that are off, check the 
+connections between the modules.  If the I/O module PWR LEDs remain off, replace those 
+modules.
+Troubleshooting input modules is slightly different from troubleshooting output modules.  
+Please refer to the proper subsection:
+• Input module troubleshooting
+• Output module troubleshooting
+Input Module Troubleshooting
+The input modules (including the PLC built-in inputs) can have the following symptoms:
+Symptom Necessary Action
+Input signal is on, but 
+the LED indicator on the 
+module is off.Check the external power input voltage on the terminal block.
+Check whether the terminal block is attached correctly.
+If the input voltage is correct but the LED indicator is still off, replace the input module.
+The LED indicator is on, 
+but the PLC does not 
+work as expected.Check whether the PLC unit RUN LED is ON.  If not, put the PLC in RUN mode.
+Check the I/O configuration with the programming software.  (See “How to Check the I/O 
+Configuration” on the next page.)
+Connect the programming software and check the X bit related to the input point that is on.  
+(See “How to Check the I/O Status” later in this section for instructions.)  
+If the X bit is off, replace the input module.
+CLICK PLC Hardware User Manual , 6th Edition, Rev. O  – C0-USER-M6–6
+Chapter 6: TroubleshootingOutput Module Troubleshooting
+The output modules (including the PLC built-in outputs) can have the following symptoms:
+How to Check the I/O Configuration
+You can use the CLICK programming software to check the I/O configuration that the PLC 
+is recognizing:
+• Connect the PLC to a computer running the CLICK programming software.
+• From the software menus, connect the software to the 
+PLC by selecting PLC and Connect...
+• From the software menus, select Setup and System Configuration...
+• The System Configuration Setup window opens, and displays all of the CLICK 
+module types the PLC recognizes that are connected in the PLC system.Symptom Necessary Action
+The module LED 
+indicator is ON, but 
+there is no output.Check the external power input voltage on the terminal block.
+Check whether the terminal block is attached correctly.
+If it is a DC sinking, relay, or AC output, check the voltage between the output and the common.   If 
+the output is working correctly, the voltage should be close to zero.
+If it is a sourcing output, check the voltage between the output and the 24 VDC input.  
+If the output is working correctly, the voltage should be close to zero.
+If the LED indicator is ON, but the output voltage is not correct, replace the output module.
+The module LED 
+indicator is OFF, even 
+though the output 
+status bit (Y---) is 
+supposed to be ON.Check whether the PLC unit RUN LED is ON.  If not, put the PLC in RUN mode.
+Check the I/O configuration with the programming software.   
+(See “How to Check the I/O Configuration” below.)
+Connect the programming software and check whether the Y bit related to the output point is ON.
+If the Y bit is not actually ON, use the override feature to manually turn the Y bit ON.   
+(See “How to Check the I/O Status” on the next page.)
+If the Y bit is ON, but the output is OFF, replace the output module.
+The module LED 
+indicator is OFF, but the 
+output is sending an 
+ON signal to the field 
+device.Leakage current can be a problem when connecting field devices to I/O modules.  False input 
+signals can be generated when the leakage current of the output point is great enough to turn on 
+the connected input device.  
+To correct this issue, install a resistor in parallel with the input or output of the circuit.  The value 
+of this resistor will depend on the amount of leakage current and the voltage applied, but usually a 
+10k to 20k ohm resistor will work.  Ensure that the wattage rating of the resistor is correct for your 
+application.
+CLICK PLC Hardware User Manual , 6th Edition, Rev. O  – C0-USER-M6–7
+Chapter 6: TroubleshootingHow to Check the I/O Status
+You can use CLICK programming software Data View window to check the I/O status in the 
+PLC unit.
+WARNING: Only authorized personnel fully familiar with all aspects of the application should make changes 
+to the program.  Make sure that you thoroughly consider the impact of any changes to minimize the risk of 
+personal injury or damage to equipment.  Specifically, forcing inputs and outputs to their ON state will cause 
+externally connected equipment to operate.
+Open or create a data view window by selecting Monitor and Data View from either the menu 
+bar, the Navigation window, or the Data View icon.
+To add new memory addresses to a Data View window:
+• Click on an empty Address field to bring up a small browser button.
+• Click the browser button to open the Address Picker window.
+• From the Address Picker window, click the Pickup Mode button, select the desired 
+I/O or memory location, and then click OK to add that address into the data view.
+To troubleshoot I/O from the Data View window:
+• Connect to PLC unit
+• Force outputs on/off, then check actual outputs to see whether they are actually on or off.
+• Edit, Write All New Values, or double click individual output Write icon.
+• Externally turn inputs on or off, then check their status in data 
+view.  Inputs cannot be forced from Data View.
+MENU BAR
+ICON
+NAVIGA TION
+WINDOW
+CLICK PLC Hardware User Manual , 6th Edition, Rev. O  – C0-USER-M6–8
+Chapter 6: TroubleshootingReplacement of I/O modules
+WARNING: The CLICK PLC does not have hot swap capability.  Do not disconnect or replace any I/O modules 
+without first shutting off power to the PLC PLC unit.
+Before replacing an I/O module, please consider the cause of the module problem.  If you 
+suspect that another device may have caused the failure in the module, that device may also 
+cause the same failure in the replacement module.  As a precaution, you may want to check 
+power supplies or other devices connected to the failed module before replacing it.
+CLICK PLC Hardware User Manual , 6th Edition, Rev. O  – C0-USER-M6–9
+Chapter 6: TroubleshootingTroubleshooting Electrical Noise Problems
+Electrical Noise Problems
+Noise is one of the most difficult problems to diagnose.  Electrical noise can enter a system in 
+many different ways and can fall into one of two categories, conducted noise or radiated noise.  
+It may be difficult to determine how the noise is entering the system, but the corrective actions 
+are similar for both types of noise problems.
+• Conducted noise is electrical interference introduced into the system 
+by way of an attached wire, panel connection, etc.  The interference 
+may enter through an I/O circuit, a power supply connection, the 
+communication ground connection, or the chassis ground connection.
+• Radiated noise is electrical interference introduced into the system without a 
+direct electrical connection, much in the same manner as radio waves.
+Reducing Electrical Noise
+Although electrical noise cannot be completely eliminated, it can be reduced to a level that will 
+not adversely affect the system.
+• Most noise problems result from improper grounding of the system.  A good 
+earth ground can be the single most effective way to correct noise problems.  If 
+a ground is not available, install a ground rod as close to the system as possible.  
+Ensure that all ground wires are single point grounds, and are not daisy chained 
+from one device to another.  Ground other metal enclosures near the system.  A 
+loose wire can act as a large antenna, introducing noise into the system; so, 
+tighten all connections in your system.  Loose ground wires are more susceptible 
+to noise than the other wires in your system.  Review Chapter 3: Installation 
+and Wiring , if you have questions regarding how to ground your system.
+• Electrical noise can enter the system through the power source for the PLC and 
+I/O circuits.  Installing an isolation transformer for all AC sources can correct this 
+problem.  DC sources should be well-grounded, good quality power supplies.
+• Separate input wiring from output wiring.  Never run low-
+voltage I/O wiring close to high voltage wiring.
+CLICK PLC Hardware User Manual , 6th Edition, Rev. O  – C0-USER-M6–10
+Chapter 6: TroubleshootingError Codes
+When there is an Error or Warning, the error code is stored in the System Data register SD1.
+When an Error occurs during the operation, the CLICK PLC system goes to the STOP mode 
+immediately and the ERR LED on the PLC unit turns on.  On the other hand, when a 
+Warning occurs during the operation, the CLICK PLC system stays in RUN mode and the 
+ERR LED on the PLC unit starts blinking.  
+In the error code tables that follow, the Category column indicates whether the error code is 
+an Error or a Warning.  If any of the Warnings listed is critical for your control system, add an 
+additional ladder program to put the CLICK PLC system in STOP mode when that specific 
+Warning occurs.  Here is an example.
+Example
+PLC Error Codes
+Error 
+CodeStatus 
+Flag*Error 
+NameCategory Causes Solutions
+101 SC20I/O Module 
+ErrorErrorThere are more than 8 I/O modules.A CLICK PLC system can support up to 8 I/O modules.  
+Remove any excessive I/O modules.
+At least one I/O module was added 
+to the CLICK PLC during operation.Power off the CLICK PLC and check the connection of the I/O 
+modules.  Then power on the CLICK PLC again.  If the problem 
+remains, connect the CLICK software to the PLC and check 
+the System Configuration.  If there is any I/O module that is 
+not shown in the System Configuration, replace it.
+An I/O module has failed.Connect the CLICK software to the CLICK PLC and check the 
+system configuration.  If there is any I/O module that is used 
+in the PLC system but not shown in the System Configuration 
+window, replace the I/O module.
+102 SC21System 
+Config ErrorErrorThe current system configuration 
+does not match the configuration 
+saved in the project file.Connect the CLICK software to the CLICK PLC and open 
+the System Configuration window.  Modify the current 
+configuration of the CLICK PLC to match the configuration 
+in the project file, or uncheck the ‘Start-up I/O Config Check’ 
+option if you want to use the current configuration.
+* The Status Flags are turned ON when the related errors occur.
+Error code table continued on next page.
+X102 turns on when the analog I/O 
+module in the I/O1 position is missing 
+external 24VDC input.By turning the System Control bit 
+SC50 on, the CLICK PLC system goes 
+in the STOP mode.
+CLICK PLC Hardware User Manual , 6th Edition, Rev. O  – C0-USER-M6–11
+Chapter 6: TroubleshootingError Codes (continued)
+PLC Error Codes
+Error 
+CodeStatus 
+Flag*Error 
+NameCategory Causes Solutions
+103 SC22I/O Config 
+ErrorErrorAt least one I/O module was 
+removed from the CLICK PLC 
+during operation.Power off the CLICK PLC and check the connection of the I/O 
+modules.  Then power on the CLICK PLC again.  If the problem 
+remains, connect the CLICK software to the PLC and check 
+the System Configuration.  If there is any I/O module that is 
+not shown in the System Configuration, replace it.
+The PLC unit can not access one or 
+more I/O modules.Connect the CLICK software to the CLICK PLC and open the 
+System Configuration window.  If there is any I/O module 
+that is used in the PLC system but not shown in the System 
+Configuration window, replace the I/O module.
+104 SC23Memory 
+Check ErrorError There is a memory check error.Power cycle the CLICK PLC.  If the same error occurs again, 
+download the project again and/or try the ‘Reset to Factory 
+Default’ command.  If the same error still occurs, replace the 
+PLC unit.
+105 SC24Project File 
+ErrorErrorThere is no project file in the CLICK 
+PLC.Download a project file into the CLICK PLC.
+The project file stored in the CLICK 
+PLC is corrupted.Download the project file into the CLICK PLC again.
+106 SC25Firmware 
+Version 
+ErrorErrorThe project file was written on a 
+newer version of CLICK software.  
+The firmware in the CLICK PLC is 
+too old to execute the project.Connect the CLICK software to the CLICK PLC and update the 
+firmware of the PLC unit.
+107 SC26Watchdog 
+Timer ErrorErrorThe PLC scan time exceeded the 
+watchdog timer setup.Connect the CLICK software to the PLC and check the 
+maximum PLC scan time and the watchdog timer setup.  
+108 SC26Interrupt 
+Watchdog 
+Timer ErrorErrorThe PLC scan time exceeded the 
+watchdog timer setup.The watchdog timer was exceeded while executing an 
+Interrupt Program. Reduce the occurrences of Interrupts, 
+or reduce the executing time of the Interrupt Programs to 
+prevent this error.
+201 SC27Lost SRAM 
+DataWarningThe data in the SRAM was lost while 
+the CLICK PLC was powered off.The Basic PLC units do not have a battery back-up, but they 
+have a capacitor that will hold memory for a few days.  The 
+data in the SRAM is lost if the CLICK PLC is powered off for 
+long enough for the capacitor to discharge.  In this case, the 
+CLICK PLC initializes the data in the SRAM automatically.  
+This also applies to Standard and Analog PLC units if a battery 
+is not installed.
+202 SC28Battery Low 
+VoltageWarningBattery voltage is too low to retain 
+data in the SRAM.Replace the battery (ADC part #: D2-BAT-1).  
+Also, set the new battery installation date and the anticipated 
+replacement date in the CLICK programming software if the 
+Battery Replacement Notification option is selected.  
+(Pull-down menu: Setup > Battery Backup Setup)
+203 SC29Battery 
+Replace-
+mentWarningThe anticipated battery 
+replacement date has passed.Replace the battery (ADC part #: D2-BAT-1).  
+Also, set the new battery installation date and the anticipated 
+replacement date in the CLICK programming software.  
+(Pull-down menu: Setup > Battery Backup Setup)
+* The SC bits are turned ON when the related errors occur.
+Error code table continued on next page.
+CLICK PLC Hardware User Manual , 6th Edition, Rev. O  – C0-USER-M6–12
+Chapter 6: TroubleshootingError Codes (continued)
+Error code table continued on next page.PLC Error Codes
+Error 
+CodeStatus 
+Flag*Error 
+NameCategory Causes Solutions
+301 X101IO1 Module 
+ErrorErrorThe analog I/O module in I/O1 
+position is not functioning.Power cycle the CLICK PLC.  If the same error occurs again, 
+replace the analog I/O module.
+302 X201IO2 Module 
+ErrorErrorThe analog I/O module in I/O2 
+position is not functioning.Power cycle the CLICK PLC.  If the same error occurs again, 
+replace the analog I/O module.
+303 X301IO3 Module 
+ErrorErrorThe analog I/O module in I/O3 
+position is not functioning.Power cycle the CLICK PLC.  If the same error occurs again, 
+replace the analog I/O module.
+304 X401IO4 Module 
+ErrorErrorThe analog I/O module in I/O4 
+position is not functioning.Power cycle the CLICK PLC.  If the same error occurs again, 
+replace the analog I/O module.
+305 X501IO5 Module 
+ErrorErrorThe analog I/O module in I/O5 
+position is not functioning.Power cycle the CLICK PLC.  If the same error occurs again, 
+replace the analog I/O module.
+306 X601IO6 Module 
+ErrorErrorThe analog I/O module in I/O6 
+position is not functioning.Power cycle the CLICK PLC.  If the same error occurs again, 
+replace the analog I/O module.
+307 X701IO7 Module 
+ErrorErrorThe analog I/O module in I/O7 
+position is not functioning.Power cycle the CLICK PLC.  If the same error occurs again, 
+replace the analog I/O module.
+308 X801IO8 Module 
+ErrorErrorThe analog I/O module in I/O8 
+position is not functioning.Power cycle the CLICK PLC.  If the same error occurs again, 
+replace the analog I/O module.
+310 X102IO1 Missing 
+24VWarningThe analog I/O module in I/O1 
+position is missing external 24VDC 
+input.Apply 24VDC to the analog I/O module.
+311 X103IO1 CH1 
+BurnoutWarningCH1 on the analog I/O module in I/
+O1 position senses burnout or open 
+circuit.Check the wiring for CH1.   
+Replace the sensor if it is broken.
+312 X106IO1 CH2 
+BurnoutWarningCH2 on the analog I/O module in I/
+O1 position senses burnout or open 
+circuit.Check the wiring for CH2.   
+Replace the sensor if it is broken.
+313 X109IO1 CH3 
+BurnoutWarningCH3 on the analog I/O module in I/
+O1 position senses burnout or open 
+circuit.Check the wiring for CH3.   
+Replace the sensor if it is broken.
+314 X112IO1 CH4 
+BurnoutWarningCH4 on the analog I/O module in I/
+O1 position senses burnout or open 
+circuit.Check the wiring for CH4.   
+Replace the sensor if it is broken.
+320 X202IO2 Missing 
+24VWarningThe analog I/O module in I/O2 
+position is missing external 24VDC 
+input.Apply 24VDC to the analog I/O module.
+321 X203IO2 CH1 
+BurnoutWarningCH1 on the analog I/O module in I/
+O2 position senses burnout or open 
+circuit.Check the wiring for CH1.   
+Replace the sensor if it is broken.
+322 X206IO2 CH2 
+BurnoutWarningCH2 on the analog I/O module in I/
+O2 position senses burnout or open 
+circuit.Check the wiring for CH2.   
+Replace the sensor if it is broken.
+* The Status Flags are turned ON when the related errors occur.
+CLICK PLC Hardware User Manual , 6th Edition, Rev. O  – C0-USER-M6–13
+Chapter 6: TroubleshootingError Codes (continued)
+PLC Error Codes
+Error 
+CodeStatus 
+Flag*Error 
+NameCategory Causes Solutions
+323 X209IO2 CH3 
+BurnoutWarningCH3 on the analog I/O module in I/
+O2 position senses burnout or open 
+circuit.Check the wiring for CH3.   
+Replace the sensor if it is broken.
+324 X212IO2 CH4 
+BurnoutWarningCH4 on the analog I/O module in I/
+O2 position senses burnout or open 
+circuit.Check the wiring for CH4.   
+Replace the sensor if it is broken.
+330 X302IO3 Missing 
+24VWarningThe analog I/O module in I/O3 
+position is missing external 24VDC 
+input.Apply 24VDC to the analog I/O module.
+331 X303IO3 CH1 
+BurnoutWarningCH1 on the analog I/O module in I/
+O3 position senses burnout or open 
+circuit.Check the wiring for CH1.   
+Replace the sensor if it is broken.
+332 X306IO3 CH2 
+BurnoutWarningCH2 on the analog I/O module in I/
+O3 position senses burnout or open 
+circuit.Check the wiring for CH2.   
+Replace the sensor if it is broken.
+333 X309IO3 CH3 
+BurnoutWarningCH3 on the analog I/O module in I/
+O3 position senses burnout or open 
+circuit.Check the wiring for CH3.   
+Replace the sensor if it is broken.
+334 X312IO3 CH4 
+BurnoutWarningCH4 on the analog I/O module in I/
+O3 position senses burnout or open 
+circuit.Check the wiring for CH4.   
+Replace the sensor if it is broken.
+340 X402IO4 Missing 
+24VWarningThe analog I/O module in I/O4 
+position is missing external 24VDC 
+input.Apply 24VDC to the analog I/O module.
+341 X403IO4 CH1 
+BurnoutWarningCH1 on the analog I/O module in I/
+O4 position senses burnout or open 
+circuit.Check the wiring for CH1.   
+Replace the sensor if it is broken.
+342 X406IO4 CH2 
+BurnoutWarningCH2 on the analog I/O module in I/
+O4 position senses burnout or open 
+circuit.Check the wiring for CH2.   
+Replace the sensor if it is broken.
+343 X409IO4 CH3 
+BurnoutWarningCH3 on the analog I/O module in I/
+O4 position senses burnout or open 
+circuit.Check the wiring for CH3.   
+Replace the sensor if it is broken.
+344 X412IO4 CH4 
+BurnoutWarningCH4 on the analog I/O module in I/
+O4 position senses burnout or open 
+circuit.Check the wiring for CH4.   
+Replace the sensor if it is broken.
+350 X502IO5 Missing 
+24VWarningThe analog I/O module in I/O5 
+position is missing external 24VDC 
+input.Apply 24VDC to the analog I/O module.
+351 X503IO5 CH1 
+BurnoutWarningCH1 on the analog I/O module in I/
+O5 position senses burnout or open 
+circuit.Check the wiring for CH1.   
+Replace the sensor if it is broken.
+352 X506IO5 CH2 
+BurnoutWarningCH2 on the analog I/O module in I/
+O5 position senses burnout or open 
+circuit.Check the wiring for CH2.   
+Replace the sensor if it is broken.
+353 X509IO5 CH3 
+BurnoutWarningCH3 on the analog I/O module in I/
+O5 position senses burnout or open 
+circuit.Check the wiring for CH3.   
+Replace the sensor if it is broken.
+* The Status Flags are turned ON when the related errors occur.
+Error code table continued on next page.
+CLICK PLC Hardware User Manual , 6th Edition, Rev. O  – C0-USER-M6–14
+Chapter 6: TroubleshootingError Codes (continued)
+PLC Error Codes
+Error 
+CodeStatus 
+Flag*Error 
+NameCategory Causes Solutions
+354 X512IO5 CH4 
+BurnoutWarningCH4 on the analog I/O module in I/
+O5 position senses burnout or open 
+circuit.Check the wiring for CH4.   
+Replace the sensor if it is broken.
+360 X602IO6 Missing 
+24VWarningThe analog I/O module in I/O6 
+position is missing external 24VDC 
+input.Apply 24VDC to the analog I/O module.
+361 X603IO6 CH1 
+BurnoutWarningCH1 on the analog I/O module in I/
+O6 position senses burnout or open 
+circuit.Check the wiring for CH1.   
+Replace the sensor if it is broken.
+362 X606IO6 CH2 
+BurnoutWarningCH2 on the analog I/O module in I/
+O6 position senses burnout or open 
+circuit.Check the wiring for CH2.   
+Replace the sensor if it is broken.
+363 X609IO6 CH3 
+BurnoutWarningCH3 on the analog I/O module in I/
+O6 position senses burnout or open 
+circuit.Check the wiring for CH3.   
+Replace the sensor if it is broken.
+364 X612IO6 CH4 
+BurnoutWarningCH4 on the analog I/O module in I/
+O6 position senses burnout or open 
+circuit.Check the wiring for CH4.   
+Replace the sensor if it is broken.
+370 X702IO7 Missing 
+24VWarningThe analog I/O module in I/O7 
+position is missing external 24VDC 
+input.Apply 24VDC to the analog I/O module.
+371 X703IO7 CH1 
+BurnoutWarningCH1 on the analog I/O module in I/
+O7 position senses burnout or open 
+circuit.Check the wiring for CH1.   
+Replace the sensor if it is broken.
+372 X706IO7 CH2 
+BurnoutWarningCH2 on the analog I/O module in I/
+O7 position senses burnout or open 
+circuit.Check the wiring for CH2.   
+Replace the sensor if it is broken.
+373 X709IO7 CH3 
+BurnoutWarningCH3 on the analog I/O module in I/
+O7 position senses burnout or open 
+circuit.Check the wiring for CH3.   
+Replace the sensor if it is broken.
+374 X712IO7 CH4 
+BurnoutWarningCH4 on the analog I/O module in I/
+O7 position senses burnout or open 
+circuit.Check the wiring for CH4.   
+Replace the sensor if it is broken.
+380 X802IO8 Missing 
+24VWarningThe analog I/O module in I/O8 
+position is missing external 24VDC 
+input.Apply 24VDC to the analog I/O module.
+381 X803IO8 CH1 
+BurnoutWarningCH1 on the analog I/O module in I/
+O8 position senses burnout or open 
+circuit.Check the wiring for CH1.   
+Replace the sensor if it is broken.
+382 X806IO8 CH2 
+BurnoutWarningCH2 on the analog I/O module in I/
+O8 position senses burnout or open 
+circuit.Check the wiring for CH2.   
+Replace the sensor if it is broken.
+383 X809IO8 CH3 
+BurnoutWarningCH3 on the analog I/O module in I/
+O8 position senses burnout or open 
+circuit.Check the wiring for CH3.   
+Replace the sensor if it is broken.
+384 X812IO8 CH4 
+BurnoutWarningCH4 on the analog I/O module in I/
+O8 position senses burnout or open 
+circuit.Check the wiring for CH4.   
+Replace the sensor if it is broken.
+* The Status Flags are turned ON when the related errors occur.
+CLICK PLC Hardware User Manual , 6th Edition, Rev. O  – C0-USER-M6–15
+Chapter 6: Troubleshooting

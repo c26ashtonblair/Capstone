@@ -1,0 +1,121 @@
+~ WARNING ~
+Thank you for purchasing automation equipment from Automationdirect.com® , doing business as, 
+AutomationDirect .  We want your new automation equipment to operate safely.  Anyone who installs or 
+uses this equipment should read this publication (and any other relevant publications) before installing or 
+operating the equipment.
+To minimize the risk of potential safety problems, you should follow all applicable local and national 
+codes that regulate the installation and operation of your equipment.  These codes vary from area to area 
+and usually change with time.  It is your responsibility to determine which codes should be followed, and 
+to verify that the equipment, installation, and operation is in compliance with the latest revision of these 
+codes.
+At a minimum, you should follow all applicable sections of the National Fire Code, National Electrical 
+Code, and the codes of the National Electrical Manufacturer’s Association (NEMA).  There may be local 
+regulatory or government offices that can also help determine which codes and standards are necessary for 
+safe installation and operation.
+Equipment damage or serious injury to personnel can result from the failure to follow all applicable 
+codes and standards.  We do not guarantee the products described in this publication are suitable for 
+your particular application, nor do we assume any responsibility for your product design, installation, or 
+operation.
+Our products are not fault-tolerant and are not designed, manufactured or intended for use or resale as 
+on-line control equipment in hazardous environments requiring fail-safe performance, such as in the 
+operation of nuclear facilities, aircraft navigation or communication systems, air traffic control, direct life 
+support machines, or weapons systems, in which the failure of the product could lead directly to death, 
+personal injury, or severe physical or environmental damage (“High Risk Activities”).  AutomationDirect  
+specifically disclaims any expressed or implied warranty of fitness for High Risk Activities.
+For additional warranty and safety information, see the Terms and Conditions section of our catalog.  
+If you have any questions concerning the installation or operation of this equipment, or if you need 
+additional information, please call us at 770-844-4200.
+This publication is based on information that was available at the time it was printed.  At 
+AutomationDirect  we constantly strive to improve our products and services, so we reserve the right to 
+make changes to the products and/or publications at any time without notice and without any obligation. 
+This publication may also discuss features that may not be available in certain revisions of the product.
+Trademarks
+This publication may contain references to products produced and/or offered by other companies.  The product and company names 
+may be trademarked and are the sole property of their respective owners. AutomationDirect  disclaims any proprietary interest in the 
+marks and names of others.
+Copyright 2008–2025, Automationdirect.com® Incorporated  
+All Rights Reserved
+No part of this manual shall be copied, reproduced, or transmitted in any way without the prior, written consent of 
+Automationdirect.com® Incorporated . AutomationDirect  retains the exclusive rights to all information included in this document.~ ADVERTENCIA  ~
+Gracias por comprar equipo de automatización de Automationdirect.com ®.  Deseamos que su nuevo equipo 
+de automatización opere de manera segura.  Cualquier persona que instale o use este equipo debe leer esta 
+publicación (y cualquier otra publicación pertinente) antes de instalar u operar el equipo.
+Para reducir al mínimo el riesgo debido a problemas de seguridad, debe seguir todos los códigos de seguridad 
+locales o nacionales aplicables  que regulan la instalación y operación de su equipo.  Estos códigos varian de 
+área en área y usualmente cambian con el tiempo.  Es su responsabilidad  determinar cuales códigos deben ser 
+seguidos y verificar que el equipo, instalación y operación estén en cumplimiento con la revisión mas reciente 
+de estos códigos.
+Como mínimo, debe seguir las secciones aplicables del Código Nacional de Incendio, Código Nacional Eléctrico, 
+y los códigos de (NEMA) la Asociación Nacional de Fabricantes Eléctricos  de USA.  Puede haber oficinas de 
+normas locales o del gobierno que pueden ayudar a determinar cuales códigos y normas son necesarios para una 
+instalación y operación segura.
+Si no se siguen todos los códigos y normas aplicables, puede resultar en daños al equipo o lesiones serias a 
+personas.  No garantizamos los productos descritos en esta publicación para ser adecuados para su aplicación 
+en particular, ni asumimos ninguna responsabilidad por el diseño de su producto, la instalación u operación.
+Nuestros productos no son tolerantes a fallas y no han sido diseñados, fabricados o intencionados para uso 
+o reventa como equipo de control en línea en ambientes peligrosos que requieren una ejecución sin fallas, 
+tales como operación en instalaciones nucleares, sistemas de navegación aérea, o de comunicación, control de 
+tráfico aéreo,  máquinas de soporte de vida o sistemas de armamentos en las cuales la falla del producto puede 
+resultar directamente en muerte, heridas personales, o daños físicos o ambientales severos (“Actividades de Alto 
+Riesgo”).  Automationdirect.com  específicamente rechaza cualquier garantía ya sea expresada o implicada 
+para actividades de alto riesgo.        
+ Para información adicional acerca de garantía e información de seguridad, vea la sección de Términos 
+y Condiciones de nuestro catálogo.  Si tiene alguna pregunta sobre instalación u operación de este equipo, o 
+si necesita información adicional, por favor llámenos al  número 770-844-4200 en Estados Unidos.  
+Esta publicación está basada en la información disponible al momento de impresión.  En Automationdirect.
+com nos esforzamos constantemente para mejorar nuestros productos y servicios, así que nos reservamos el 
+derecho de hacer cambios al producto y/o a las publicaciones en cualquier momento sin notificación  y sin 
+ninguna obligación.  Esta publicación también puede discutir características que no estén disponibles en ciertas 
+revisiones del producto .
+Marcas Registradas
+Esta publicación puede contener referencias a productos producidos y/u ofrecidos por otras compañías.  Los nombres de las 
+compañías y productos pueden tener marcas registradas y son propiedad única de sus respectivos dueños.  Automationdirect.com, 
+renuncia cualquier interés propietario en las marcas y nombres de otros.
+PROPIEDAD LITERARIA 2008–2025 , AUTOMATIONDIRECT.COM® INCORPORATED
+Todos los derechos reservados
+No se permite copiar, reproducir, o transmitir de ninguna forma ninguna parte de este manual sin previo consentimiento por 
+escrito de Automationdirect.com ® Incorprated .  Automationdirect.com  retiene los derechos exclusivos a toda la información 
+incluida en este documento.  Los usuarios de este equipo pueden copiar este documento solamente para instalar, configurar y 
+mantener el equipo correspondiente.  También las instituciones de enseñanza pueden usar este manual para propósitos educativos.~ AVERTISSEMENT ~
+Nous vous remercions d’avoir acheté l’équipement d’automatisation de Automationdirect.com® , en faisant des 
+affaires comme, AutomationDirect . Nous tenons à ce que votre nouvel équipement d’automatisation fonctionne en 
+toute sécurité.  Toute personne qui installe ou utilise cet équipement doit lire la présente publication (et toutes les 
+autres publications pertinentes) avant de l’installer ou de l’utiliser.
+Afin de réduire au minimum le risque d’éventuels problèmes de sécurité, vous devez respecter tous les codes locaux 
+et nationaux applicables régissant l’installation et le fonctionnement de votre équipement.  Ces codes diffèrent d’une 
+région à l’autre et, habituellement, évoluent au fil du temps.  Il vous incombe de déterminer les codes à respecter et 
+de vous assurer que l’équipement, l’installation et le fonctionnement sont conformes aux exigences de la version la 
+plus récente de ces codes.
+Vous devez, à tout le moins, respecter toutes les sections applicables du Code national de prévention des incendies, 
+du Code national de l’électricité et des codes de la National Electrical Manufacturer’s Association (NEMA).  Des 
+organismes de réglementation ou des services gouvernementaux locaux peuvent également vous aider à déterminer 
+les codes ainsi que les normes à respecter pour assurer une installation et un fonctionnement sûrs. 
+L’omission de respecter la totalité des codes et des normes applicables peut entraîner des dommages à l’équipement 
+ou causer de graves blessures au personnel.  Nous ne garantissons pas que les produits décrits dans cette publication 
+conviennent à votre application particulière et nous n’assumons aucune responsabilité à l’égard de la conception, de 
+l’installation ou du fonctionnement de votre produit.
+Nos produits ne sont pas insensibles aux défaillances et ne sont ni conçus ni fabriqués pour l’utilisation ou la revente 
+en tant qu’équipement de commande en ligne dans des environnements dangereux nécessitant une sécurité absolue, 
+par exemple, l’exploitation d’installations nucléaires, les systèmes de navigation aérienne ou de communication, le 
+contrôle de la circulation aérienne, les équipements de survie ou les systèmes d’armes, pour lesquels la défaillance du 
+produit peut provoquer la mort, des blessures corporelles ou de graves dommages matériels ou environnementaux 
+(«activités à risque élevé»).  La société AutomationDirect  nie toute garantie expresse ou implicite d’aptitude à 
+l’emploi en ce qui a trait aux activités à risque élevé.
+Pour des renseignements additionnels touchant la garantie et la sécurité, veuillez consulter la section Modalités et 
+conditions de notre documentation.  Si vous avez des questions au sujet de l’installation ou du fonctionnement de 
+cet équipement, ou encore si vous avez besoin de renseignements supplémentaires, n’hésitez pas à nous téléphoner au 
+770-844-4200.
+Cette publication s’appuie sur l’information qui était disponible au moment de l’impression.  À la société 
+AutomationDirect , nous nous efforçons constamment d’améliorer nos produits et services.  C’est pourquoi nous 
+nous réservons le droit d’apporter des modifications aux produits ou aux publications en tout temps, sans préavis ni 
+quelque obligation que ce soit.  La présente publication peut aussi porter sur des caractéristiques susceptibles de ne 
+pas être offertes dans certaines versions révisées du produit.
+Marques de commerce
+La présente publication peut contenir des références à des produits fabriqués ou offerts par d’autres entreprises.  Les désignations 
+des produits et des entreprises peuvent être des marques de commerce et appartiennent exclusivement à leurs propriétaires 
+respectifs.  AutomationDirect  nie tout intérêt dans les autres marques et désignations.
+Copyright 2008–2025, Automationdirect.com® Incorporated
+Tous droits réservés
+Nulle partie de ce manuel ne doit être copiée, reproduite ou transmise de quelque façon que ce soit sans le consentement préalable 
+écrit de la société Automationdirect.com® Incorporated . AutomationDirect  conserve les droits exclusifs à l’égard de tous les 
+renseignements contenus dans le présent document.
