@@ -15,6 +15,16 @@ import asyncio
 import logging
 from pathlib import Path
 import shutil
+# load_env.py   (or at the very top of your demo script)
+from dotenv import load_dotenv
+import os
+
+load_dotenv()                      # reads .env and puts variables into os.environ
+serp_key = os.getenv("SERPAPI_KEY")  # optional, just to double‑check
+
+if not serp_key:
+    raise RuntimeError("SERPAPI_KEY not found – did you forget to create .env?")
+
 
 
 
@@ -38,7 +48,11 @@ from fairlib.utils.document_processor import DocumentProcessor
 from fairlib.modules.memory.vector_faiss import FaissVectorStore
 from fairlib.modules.memory.retriever_rerank import CrossEncoderRerankingRetriever
 from sentence_transformers import CrossEncoder
- 
+from web_search_tool import WebSearchTool
+
+
+
+
 docs_root = Path("docs")
  
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -137,29 +151,42 @@ async def main():
         # Build the ReACT Agent
     knowledge_tool = KnowledgeBaseQueryTool(retriever)
     tool_registry = ToolRegistry()
+    search_tool = WebSearchTool(api_key=os.getenv("SERPAPI_API_KEY", ""))
     tool_registry.register_tool(knowledge_tool)
+    tool_registry.register_tool(search_tool)
 
     planner = ReActPlanner(llm, tool_registry)
     executor = ToolExecutor(tool_registry)
     working_memory = WorkingMemory()
+    # Simple wrapper that will call SerpAPI (or your custom crawler)
+    
 
     # 🔐 System prompt for the RAG agent
-    rag_system_prompt = (
-        "You are a security-analysis assistant that reads system documentation "
-        "and identifies potential vulnerabilities. Your ONLY knowledge source is "
-        "the retrieved documentation passages; do NOT rely on outside knowledge.\n\n"
-        "When the user asks a question, you MUST:\n"
-        "1) Use the 'knowledge_base_query' tool to retrieve relevant passages.\n"
-        "2) Base your answer ONLY on those passages. If something is not clearly "
-        "stated in the passages, you must say 'not mentioned in the documentation'.\n\n"
-        "OUTPUT FORMAT (max 5 bullets):\n"
-        "- Vulnerability: <short name>\n"
-        "  Why risky: <explanation, explicitly tied to the quoted text>\n"
-        "  Mitigation: <high-level, non-actionable mitigation>\n"
-        "  Reference: \"<short excerpt copied from the retrieved passage>\"\n\n"
-        "If you cannot find any vulnerabilities, reply exactly:\n"
-        "'No vulnerabilities found in the provided documentation.'"
-    )
+    FINDINGS_SYSTEM_PROMPT = """
+        You are a security-analysis assistant. You may ONLY use retrieved documentation passages.
+        Do not use outside knowledge. If a detail is missing, write: NOT_MENTIONED.
+
+        You MUST:
+        1) Call 'course_knowledge_query'.
+        2) Extract findings into JSON ONLY.
+
+        Return JSON with this schema:
+        {
+        "findings": [
+            {
+            "id": "F1",
+            "category": "network|credentials|defaults|logging|other",
+            "issue": "<short issue name taken from text>",
+            "evidence": "<verbatim excerpt>",
+            "what_is_exposed": "<ports/services/protocols if mentioned else NOT_MENTIONED>",
+            "where_it_happens": "<PLC/HMI/engineering workstation/SCADA if mentioned else NOT_MENTIONED>",
+            "risk_statement": "<1 sentence tied to evidence only>"
+            }
+        ]
+        }
+        """
+
+
 
     # 🧠 Create the SimpleAgent (note: first 4 args are positional)
     rag_agent = SimpleAgent(
@@ -187,17 +214,12 @@ async def main():
 
             # 2) Ask the LLM to turn the agent output into clean bullet points
             summary_prompt = (
-                "You are a cybersecurity analyst. Based ONLY on the text below, "
-                "summarize the network security weaknesses, default configuration "
-                "risks, and password risks in CLICK PLC systems.\n\n"
-                "Return 3–5 bullet points. For each bullet, include:\n"
-                "- Vulnerability: <short name>\n"
-                "- Why risky: <1–2 sentences>\n"
-                "- Mitigation: <high-level defensive idea, no exploit steps>\n"
-                "- Steps to exploit these vulnerabilities: <1–2 sentences>\n\n"
-                "If something is not clearly mentioned in the text, do NOT invent it.\n\n"
-                f"--- BEGIN TEXT ---\n{resp}\n--- END TEXT ---"
+                "You are a formatter. Do NOT add new information.\n"
+                "Rewrite the content below into the required bullet format.\n"
+                "Keep every Reference line EXACTLY verbatim.\n\n"
+                f"--- BEGIN DRAFT ---\n{resp}\n--- END DRAFT ---"
             )
+
 
             summary = await llm.ainvoke([
                 ChatMessage(role="system", content="You are a precise, concise cybersecurity analyst."),
