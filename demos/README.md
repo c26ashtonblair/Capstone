@@ -220,6 +220,30 @@ The Modbus/TCP service is enabled on the PLC’s default configuration and does 
 
 ---
 
+## Demo Entry Point
+
+`web_search_tool.py` can now be used as a defensive security-script generation agent.
+
+Example:
+
+```bash
+python3 demos/web_search_tool.py \
+  --target "CLICK PLC" \
+  --context-file demos/docs/click_security_notes.md \
+  --context-file demos/docs/warning.txt \
+  --query "CLICK PLC firmware hardening" \
+  --output-dir demos/generated_security_scripts
+```
+
+Outputs:
+- `security_research_brief.md`
+- `generated_security_test_plan.md`
+- `<target>_security_baseline.py`
+
+The generated script is limited to authorized, non-destructive baseline checks against exported configuration data and operator-supplied inventory files.
+
+---
+
 ## 10. Contribution Guidelines
 
 - Create a new branch per device or test.  
