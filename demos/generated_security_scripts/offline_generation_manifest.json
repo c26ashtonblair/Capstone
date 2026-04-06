@@ -1,0 +1,52 @@
+{
+  "target": "CLICK PLC classroom trainer",
+  "generation_mode": "web-informed offline-only",
+  "safety_boundary": {
+    "allow_web_research_during_generation": true,
+    "allow_generated_artifact_network_access": false,
+    "allow_generated_artifact_plc_writes": false,
+    "allow_generated_artifact_hmi_writes": false,
+    "allowed_inputs": [
+      "exported configuration files",
+      "operator-supplied service inventory CSV files",
+      "post-change evidence JSON files"
+    ]
+  },
+  "query_count": 18,
+  "local_context_files": [
+    "retrieved_chunk",
+    "retrieved_chunk",
+    "retrieved_chunk"
+  ],
+  "local_signals": [
+    "network segmentation"
+  ],
+  "selected_modules": [
+    {
+      "module_id": "default_accounts_review",
+      "title": "Default account review",
+      "rationale": "Defaults and shared credentials are high-risk in PLC environments."
+    },
+    {
+      "module_id": "password_policy",
+      "title": "Password policy strength",
+      "rationale": "Classroom systems should still demonstrate strong password policy configuration."
+    },
+    {
+      "module_id": "segmentation_and_subnets",
+      "title": "Segmentation and management subnet restrictions",
+      "rationale": "OT access should be narrowed to approved management paths."
+    },
+    {
+      "module_id": "industrial_protocol_review",
+      "title": "Industrial protocol exposure review",
+      "rationale": "Protocol availability should be documented and protected, especially Modbus-related paths."
+    },
+    {
+      "module_id": "firmware_and_diagnostics",
+      "title": "Firmware and diagnostic evidence capture",
+      "rationale": "Version and diagnostic state should be captured in exported evidence for review."
+    }
+  ],
+  "web_result_count": 71
+}

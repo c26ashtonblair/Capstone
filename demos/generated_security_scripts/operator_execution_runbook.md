@@ -1,31 +1,27 @@
-# Approved Change Runbook: CLICK PLC classroom trainer
+# Operator Execution Runbook: CLICK PLC classroom trainer
 
 This runbook is human-in-the-loop only. It is intended for approved manual changes and explicitly excludes automated writes through HMI, PLC, or protocol interfaces.
 
 ## Preconditions
 
-- Confirm written authorization and maintenance window approval.
+- Confirm `pre_change_checklist.md` is complete.
+- Confirm `proposed_hmi_change_set.json` has been reviewed and annotated with accepted/rejected items.
 - Confirm a current project backup and screenshot/export of relevant HMI settings.
-- Confirm rollback owner, test owner, and sign-off owner.
-- Confirm the read-only validation report has been collected.
+- Confirm rollback owner, operator, and sign-off owner.
 
-## Recommended Change Themes
+## Execution Sequence
 
 - Review settings related to network segmentation.
 
 ## Manual Procedure Template
 
-1. Record the current value of the target setting in the change log.
-2. Apply the approved value manually through the vendor-supported interface.
-3. Capture screenshots or exports of the updated value.
-4. Verify system state remains healthy and expected alarms/status remain normal.
-5. Run the post-change verification script and attach the output to the change ticket.
-
-## Rollback Template
-
-1. Restore the previously recorded setting value.
-2. Reapply the saved project or backup if a single-setting rollback is insufficient.
-3. Re-run read-only validation and post-change verification to confirm restoration.
+1. Open `proposed_hmi_change_set.json` and work through settings one at a time.
+2. On the HMI, navigate to the setting indicated by `location_hint`.
+3. Record the current value in the change log before editing.
+4. Manually apply the approved value only after confirming it matches the accepted proposal.
+5. Capture a screenshot or export showing the new value.
+6. Pause after each setting to confirm the classroom system remains healthy and expected alarms/status remain normal.
+7. When all accepted settings are complete, run the post-change verification script and attach the output to the exercise record.
 
 ## Reference Links
 

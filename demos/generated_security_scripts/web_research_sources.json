@@ -1,0 +1,428 @@
+[
+  {
+    "title": "Analyzing the AutomationDirect CLICK Plus PLC Protocol",
+    "link": "https://www.nozominetworks.com/blog/breaking-the-encryption-analyzing-the-automationdirect-click-plus-plc-protocol",
+    "domain": "www.nozominetworks.com",
+    "snippet": "An overview of vulnerabilities found in the proprietary UDP protocol used by AutomationDirect CLICK devices, along with an explanation of ..."
+  },
+  {
+    "title": "AutomationDirect CLICK Programmable Logic Controller",
+    "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-022-02",
+    "domain": "www.cisa.gov",
+    "snippet": "Network Isolation \u2013 Disconnect the CLICK PLUS PLC from external networks (e.g., the internet or corporate LAN) to reduce exposure."
+  },
+  {
+    "title": "Internal Database Security Advisory: SA-00019",
+    "link": "https://community.automationdirect.com/s/internal-database-security-advisory/a4GDp000000oojmMAA/sa00019",
+    "domain": "community.automationdirect.com",
+    "snippet": "3.1 AFFECTED PRODUCTS Automation Direct reports these vulnerabilities affect the following CLICK PLC CPU modules: CLICK PLC CPU Modules: C0-1x CPUs with All ..."
+  },
+  {
+    "title": "Boost Your Defenses with Top 20 Secure Practices",
+    "link": "https://www.compliance-labs.com/topic/nist-sp-800-82/plc-security-boost-your-defenses-with-top-20-secure-practices/",
+    "domain": "www.compliance-labs.com",
+    "snippet": "We can help you assess your current security posture, can identify specific vulnerabilities in your PLC code and conduct configuration audits."
+  },
+  {
+    "title": "One Year of Top 20 Secure PLC Coding Practices",
+    "link": "https://fluchsfriction.medium.com/one-year-of-top-20-secure-plc-coding-practices-c2f0042ad4a2",
+    "domain": "fluchsfriction.medium.com",
+    "snippet": "We are going to look at the Top 20 from four perspectives: project setup, security capabilities, threats, and implementation."
+  },
+  {
+    "title": "AutomationDirect CLICK PLUS",
+    "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-25-266-01",
+    "domain": "www.cisa.gov",
+    "snippet": "The use of a broken or risky cryptographic algorithm was discovered in firmware version 3.60 of the Click Plus PLC. The vulnerability relies on ..."
+  },
+  {
+    "title": "Rockwell Automation Customer Hardening Guidelines",
+    "link": "https://support.rockwellautomation.com/app/answers/answer_view/a_id/546987/~/rockwell-automation-customer-hardening-guidelines",
+    "domain": "support.rockwellautomation.com",
+    "snippet": "This guide is intended to assist you with hardening your automation system in a way that is cost-effective, scalable, and with minimal user impact."
+  },
+  {
+    "title": "Proactive Steps You Can Take To Protect PLCs From ...",
+    "link": "https://www.linkedin.com/pulse/proactive-steps-you-can-take-protect-plcs-from-cyber-attacks-kpasc",
+    "domain": "www.linkedin.com",
+    "snippet": "CISA recommends several measures to bolster security: Changing default passwords, especially the commonly used \u201c1111\u201d on Unitronics PLCs."
+  },
+  {
+    "title": "Features of the CLICK PLUS PLC",
+    "link": "https://www.automationdirect.com/clickplcs/clickplus/features?srsltid=AfmBOoql_VNdYAyeUPwiq_pe47GqxAIxCIrHhByB9JC8ozx_rJzycM5K",
+    "domain": "www.automationdirect.com",
+    "snippet": "Data logging, Wi-Fi connectability, MQTT communication and increased security measures are just a few of the impressive features offered with the CLICK PLUS PLC ..."
+  },
+  {
+    "title": "Control Systems Security | PLC Cyber Security - Acscm.com",
+    "link": "https://www.acscm.com/blog/protecting-controls-in-the-digital-age-plc-cyber-security-essentials/",
+    "domain": "www.acscm.com",
+    "snippet": "PLC security system safeguarding is extremely important in general control systems security, and it all starts with an effective PLC cyber ..."
+  },
+  {
+    "title": "Getting Started with a CLICK PLC from AutomationDirect",
+    "link": "https://www.automationdirect.com/videos/video?videoToPlay=1smIvqPL9Hs&srsltid=AfmBOoqWAK7TwDz6yerY037Q-0qT5u2DT8lpo3Jxh7vc_ucM6I_c-sJt",
+    "domain": "www.automationdirect.com",
+    "snippet": "This How-To video is to help quickly bring you up to speed with the CLICK Programmable Logic Controller whether you are new to PLCs or a seasoned veteran."
+  },
+  {
+    "title": "Looking for Automation Direct best practices for long ...",
+    "link": "https://community.automationdirect.com/s/question/0D53u000029N9JyCAK/looking-for-automation-direct-best-practices-for-long-distance-io-with-click-plc",
+    "domain": "community.automationdirect.com",
+    "snippet": "I would also like some best practices for placing fuses on passive & active long distance I/O. Lastly, I cannot find any input de-bounce ..."
+  },
+  {
+    "title": "AutomationDirect PLCs usage : r/PLC",
+    "link": "https://www.reddit.com/r/PLC/comments/15wxsdc/automationdirect_plcs_usage/",
+    "domain": "www.reddit.com",
+    "snippet": "They are as good as any other PLC. Documentation is fine. I learned with a Click PLC and I would easily migrate any Micro Logix or Micro800 ..."
+  },
+  {
+    "title": "Looking for best way to control 30+ Click PLCs from one C- ...",
+    "link": "https://automationdirectinc.my.site.com/s/question/0D53u00003zL8IECA0/looking-for-best-way-to-control-30-click-plcs-from-one-cmore-panel",
+    "domain": "automationdirectinc.my.site.com",
+    "snippet": "A maximum of 64 PLCs including both Ethernet and Serial can be used. C-more can communicate with multiple PLCs via a Serial network, an Ethernet network, or ..."
+  },
+  {
+    "title": "Click PLCs Overview",
+    "link": "https://cdn.automationdirect.com/static/catalog/images/product-pdf/CL-CLICK-PLC-Overview.pdf",
+    "domain": "cdn.automationdirect.com",
+    "snippet": "With a starting at price of only $110.00 and free easy-peasy programming software, CLICK PLUS PLCs are a \u201cmust have\u201d for simple, affordable control with a kick!"
+  },
+  {
+    "title": "PLC Network Security Guide: Protect Industrial Controls ...",
+    "link": "https://industrialmonitordirect.com/blogs/knowledgebase/plc-network-security-preventing-unauthorized-access-and-attacks?srsltid=AfmBOoqer29M9OgnXNSv0gBABT79fKiMu9UpwRX0Wb-KdumzE4O9jE5e",
+    "domain": "industrialmonitordirect.com",
+    "snippet": "PLC network security guide covering attack vectors, exposure risks, and security best practices for industrial control systems."
+  },
+  {
+    "title": "CLICK PLC Hardware User Manual (C0-USER-M)",
+    "link": "https://cdn.automationdirect.com/static/manuals/c0userm/c0userm.pdf",
+    "domain": "cdn.automationdirect.com",
+    "snippet": "... Security Considerations for Control Systems Networks. Security Considerations for Control Systems Networks ................................................ A\u20132."
+  },
+  {
+    "title": "clicklearn-infrastructure-and-security.pdf",
+    "link": "https://www.clicklearn.com/media/195467/clicklearn-infrastructure-and-security.pdf",
+    "domain": "www.clicklearn.com",
+    "snippet": "No information is available for this page."
+  },
+  {
+    "title": "Security hardening",
+    "link": "https://www.plcnext-community.net/security/plcnext_security_guideline/plcnext_defense_in_depth/security_hardening/",
+    "domain": "www.plcnext-community.net",
+    "snippet": "Virtual PLC meets AI: Why software-defined control is the foundation for intelligent automation. The new PLCnext Community Forum is live \u2013 NOW !"
+  },
+  {
+    "title": "Hands on PLC Training Best Practices",
+    "link": "https://plc-training.org/handson-plc-training-bp5.html",
+    "domain": "plc-training.org",
+    "snippet": "The Hands-on PLC Training section of PLC training best practices and tips. New best practices and tips for delivering hands-on will be added to this page."
+  },
+  {
+    "title": "CLICK PLC Trainer",
+    "link": "https://interconnectingautomation.com/CLICKPLCSimulator",
+    "domain": "interconnectingautomation.com",
+    "snippet": "This portable turnkey trainer (including a C0-00DD1-D PLC Unit), equipped with pushbuttons and indicators, is available for $189 and offers an easy 24-volt plug ..."
+  },
+  {
+    "title": "Security Hardening of Industrial Control Systems through ...",
+    "link": "https://www.acsac.org/2023/workshops/icss/shwetha-gowdanakatte-slides.pdf",
+    "domain": "www.acsac.org",
+    "snippet": "1) PLC operates without ABAC Gateway. 2) PLC operates with ABAC Gateway. \u2022 Result shows ABAC Gateway effectively hardens the PLC security. 12/8 ..."
+  },
+  {
+    "title": "Top 20 PLC Secure Coding Practices Training Session",
+    "link": "https://www.youtube.com/watch?v=3vv9LgJ6-A0",
+    "domain": "www.youtube.com",
+    "snippet": "We're going to walk through the eight different items that we kind of want to highlight today from a secure coding example."
+  },
+  {
+    "title": "CVE-2021-32982 - NVD",
+    "link": "https://nvd.nist.gov/vuln/detail/CVE-2021-32982",
+    "domain": "nvd.nist.gov",
+    "snippet": "Automation Direct CLICK PLC CPU Modules: C0-1x CPUs with firmware prior to v3.00 passwords are sent as plaintext during unlocking and project transfers. An ..."
+  },
+  {
+    "title": "Programmable Logic Controller (PLC) Security",
+    "link": "https://www.lrqa.com/en/cyber-labs/programmable-logic-controller-security/",
+    "domain": "www.lrqa.com",
+    "snippet": "There is no doubt that protecting PLCs from cyber-attacks is very important as they directly control machineries."
+  },
+  {
+    "title": "Securing America's Cyber-Physical Systems",
+    "link": "https://digitalcommons.murraystate.edu/cgi/viewcontent.cgi?article=1228&context=honorstheses",
+    "domain": "digitalcommons.murraystate.edu",
+    "snippet": "All CLICK Programming Software before Version 3.0 possesses these vulnerabilities. Included are the complete ClickPLC firmware patch notes. We are only ..."
+  },
+  {
+    "title": "External Cybersecurity News",
+    "link": "https://www.columbiabasin.edu/learn/discover-your-path/computer-science/cyber-security/external-cyber-security-newsfeeds.html",
+    "domain": "www.columbiabasin.edu",
+    "snippet": "This ICSA is a verbatim republication of Schneider Electric SEVD-2026-069-03 from a direct conversion of the vendor's Common Security Advisory Framework (CSAF) ..."
+  },
+  {
+    "title": "Security",
+    "link": "https://www.clickstudios.com.au/security/advisories/",
+    "domain": "www.clickstudios.com.au",
+    "snippet": "Advisories: At this time, there are no active major incidents affecting Passwordstate. Common Vulnerabilities and Exposures (CVEs):. The table below outlines ..."
+  },
+  {
+    "title": "Click PLC WLAN Ethernet Data Transfer Master Slave Protocol!",
+    "link": "https://www.youtube.com/watch?v=1cs8O8HLE6Q",
+    "domain": "www.youtube.com",
+    "snippet": "The Click server PLC does not need any code for communication to the client other than a heartbeat to ensure the transmission is valid."
+  },
+  {
+    "title": "PLC Systems Passwords",
+    "link": "https://portforward.com/plc-systems/passwords/",
+    "domain": "portforward.com",
+    "snippet": "These are the factory default passwords for PLC Systems routers. If you have changed the password in your router, then you need to use the ..."
+  },
+  {
+    "title": "Assign Static IP to CLICK PLUS PLC Easily!",
+    "link": "https://accautomation.ca/assign-static-ip-to-click-plus-plc-easily/",
+    "domain": "accautomation.ca",
+    "snippet": "Port 1 of the Click PLC defaults to DHCP. Dynamic Host Configuration ... On the default home tab, select COM Port Setup under the CPU icon."
+  },
+  {
+    "title": "CLICK PLUS Hardware User Manual (C2-USER-M)",
+    "link": "https://www.tecon.cz/pdf/c2userm.pdf",
+    "domain": "www.tecon.cz",
+    "snippet": "... CLICK PLUS PLC User Manual. Please include the Manual Number and the Manual Issue, both shown below, when communicating with Technical Support regarding this ..."
+  },
+  {
+    "title": "Click Hardware User Manual | PDF",
+    "link": "https://www.scribd.com/document/660954199/Click-hardware-user-manual",
+    "domain": "www.scribd.com",
+    "snippet": "Once we have communications cable(s) connected. between the Ethernet port on the CLICK PLC and the. Ethernet port on the PC, we are ready to connect the. CLICK ..."
+  },
+  {
+    "title": "AutomationDirect CLICK PLC Training",
+    "link": "https://interconnectingautomation.com/sites/default/files/d_ICA_CLICK-PLC_class-2021.pdf",
+    "domain": "interconnectingautomation.com",
+    "snippet": "\u2022 Exposure to state-of-the-art PLCs to keep engineers proficient. \u2022 Excellent training for maintenance staff enabling them to troubleshoot and install PLCs."
+  },
+  {
+    "title": "CLICK PLC",
+    "link": "https://files.lamonde.com/pdf/adc/c000drd.pdf",
+    "domain": "files.lamonde.com",
+    "snippet": "Manual covers all CLICK PLC and. I/O module installation and wiring ... PLUS PLC for setup and programming. Note: This cable assembly uses the PC's USB ..."
+  },
+  {
+    "title": "CLICK PLC Communication Setup Guide | PDF",
+    "link": "https://www.scribd.com/document/238637156/Click-PLC-Communication",
+    "domain": "www.scribd.com",
+    "snippet": "This document discusses communications capabilities of the CLICK PLC system. It covers electrical connections, communication port specifications, status ..."
+  },
+  {
+    "title": "How to Teach Yourself PLC Programming",
+    "link": "https://control.com/textbook/programmable-logic-controllers/how-to-teach-yourself-plc-programming/",
+    "domain": "control.com",
+    "snippet": "Read about How to Teach Yourself PLC Programming (Basics of Programmable Logic Controllers (PLCs)) in our free Automation Textbook."
+  },
+  {
+    "title": "\"Modular Electronics Learning (ModEL) project\"",
+    "link": "http://ibiblio.org/kuphaldt/socratic/model/mod_plc.pdf",
+    "domain": "ibiblio.org",
+    "snippet": ") in the DirectLogic PLC series, and the SC and SD memory addresses in the CLICK PLC ... Identify the type of PLC timer instruction (i.e. on-delay ..."
+  },
+  {
+    "title": "Firewall Configuration: Rules, Zones & Network ...",
+    "link": "https://www.coursesidekick.com/information-systems/28479272",
+    "domain": "www.coursesidekick.com",
+    "snippet": "4-4 Draft of Training Manual3 Significance of Firewalls Illustrate the process of rule creation and firewall configuration. The process of creating firewall ..."
+  },
+  {
+    "title": "Click PLC as a basic trainer?",
+    "link": "https://www.plctalk.net/forums/threads/click-plc-as-a-basic-trainer.121199/",
+    "domain": "www.plctalk.net",
+    "snippet": "I don't see myself solely programming PLCs for a living but I would like to get into building my own panels and troubleshooting them from a ..."
+  },
+  {
+    "title": "Network segmentation",
+    "link": "https://engineer.plcnext.help/latest/NetworkSegmentation.htm",
+    "domain": "engineer.plcnext.help",
+    "snippet": "Firewalls \u00b7 Determine communication relations according to the least privilege concept: The default is \"deny\" and only needed communication relations should be ..."
+  },
+  {
+    "title": "ICS612: ICS Cybersecurity In-Depth",
+    "link": "https://www.sans.org/cyber-security-courses/ics-cyber-security-in-depth",
+    "domain": "www.sans.org",
+    "snippet": "Explore expert-driven guidance, training, and tools to help defend against ... Network segmentation implementation; Firewall configuration for ICS; Data ..."
+  },
+  {
+    "title": "The Ultimate Guide to PLC Training: Skills, Certifications ...",
+    "link": "https://www.solisplc.com/tutorials/plc-training",
+    "domain": "www.solisplc.com",
+    "snippet": "This comprehensive guide explores everything you need to know about PLC training, including essential programming skills, top certification programs, ..."
+  },
+  {
+    "title": "PLC Back-up and Restore Test",
+    "link": "https://www.plctalk.net/forums/threads/plc-back-up-and-restore-test.3650/",
+    "domain": "www.plctalk.net",
+    "snippet": "I am in the process of writing a OQ (Operation Qualification) protocol for testing the back-up and restore of Siemens PLC -S7/400."
+  },
+  {
+    "title": "AutomationDirect Technical Support - FAQs",
+    "link": "https://support.automationdirect.com/faq/showfaq.php?id=232",
+    "domain": "support.automationdirect.com",
+    "snippet": "Use File >> Save Project >> To PLC to restore the complete project and the PID tables will be restored. You can also restore the PID ..."
+  },
+  {
+    "title": "Backing up PLC configuration",
+    "link": "https://control.com/forums/threads/backing-up-plc-configuration.33504/",
+    "domain": "control.com",
+    "snippet": "I would like to get a backup (to my laptop) of the configuration in the PLC before something goes wrong. I have limited knowledge but a ..."
+  },
+  {
+    "title": "Backup program from PLC X20CP1381 so i can restore it ...",
+    "link": "https://community.br-automation.com/t/backup-program-from-plc-x20cp1381-so-i-can-restore-it-in-another-cpu-same-as-the-first-one/8140",
+    "domain": "community.br-automation.com",
+    "snippet": "I have a CPU X20CP1381 and I want to back up the program. I did some research and found one solution that involves taking an image of the CF ..."
+  },
+  {
+    "title": "PLC Error Code Lookup ?How to Troubleshoot ... - CalcPanel",
+    "link": "https://calcpanel.com/tools/plc-error-lookup",
+    "domain": "calcpanel.com",
+    "snippet": "Find and troubleshoot PLC error codes instantly. Search by brand to get solutions for Siemens, Allen-Bradley, Schneider, and other major PLCs."
+  },
+  {
+    "title": "CLICK Plus PLC intermittent ERR after power cycle",
+    "link": "https://automationdirectinc.my.site.com/s/question/0D53u00007lJIjlCAG",
+    "domain": "automationdirectinc.my.site.com",
+    "snippet": "The error log on the PLC lists this for each occurrence: Error Code: 109. Description: Sub-processor F/W Version Error. It seems to happen somewhat less ..."
+  },
+  {
+    "title": "How to Troubleshoot and Reset Error Codes in your PLC ...",
+    "link": "https://maplesystems.com/tutorial/how-to-troubleshoot-and-reset-error-codes-in-your-plc-diagnostics/?srsltid=AfmBOorvClTXLZX06y0cmerTAtX1am4sDY1LXu3CAf8v171PKDcLtEet",
+    "domain": "maplesystems.com",
+    "snippet": "You will learn how to troubleshoot your PLC Diagnostics and resetting any error codes within your PLC and I/O Modules."
+  },
+  {
+    "title": "CLICK PLC Hardware User Manual (C0-USER-M)",
+    "link": "https://www.tecon.cz/pdf/c0userm.pdf",
+    "domain": "www.tecon.cz",
+    "snippet": "There may be local regulatory or government offices that can also help determine which codes and standards are necessary for safe installation and operation."
+  },
+  {
+    "title": "Automation Tech Student (AAS), just bought a Click PLC ...",
+    "link": "https://www.reddit.com/r/PLC/comments/lf03d3/automation_tech_student_aas_just_bought_a_click/",
+    "domain": "www.reddit.com",
+    "snippet": "The first day of the PLC section of class, I walk my students through how to download RSLogix500 Micro Lite and RSLogix Emulate 500 to their ..."
+  },
+  {
+    "title": "click plc programming tutorial",
+    "link": "https://accautomation.ca/tag/click-plc-programming-tutorial/",
+    "domain": "accautomation.ca",
+    "snippet": "click plc programming tutorial \u00b7 Master the Clock: Using Timers in the Click PLC \u00b7 FREE CLICK PLC Software: Is It REALLY That Easy? \u00b7 Integrating an XY MD02 Sensor ..."
+  },
+  {
+    "title": "PLC Training Equipment: PLC Trainers",
+    "link": "https://plc-training.org/plc-equipment.html",
+    "domain": "plc-training.org",
+    "snippet": "Our PLC Trainers are standard educational equipment for manufacturing training and the individual. We include PLC programming training and examples so the PLC ..."
+  },
+  {
+    "title": "PLC in Education Archives - Mechatronics Training",
+    "link": "https://mechatronicstraining.com/category/plc-in-education/",
+    "domain": "mechatronicstraining.com",
+    "snippet": "Explore CLICK PLC tutorials in our PLC - TechEd/HigherEd category. Discover simple DIY projects, beginner guides, and lesson plans designed to boost your ..."
+  },
+  {
+    "title": "Training Moves Out of Classroom -- Issue 34, 2016",
+    "link": "https://library.automationdirect.com/training-moves-out-of-classroom-issue-34/",
+    "domain": "library.automationdirect.com",
+    "snippet": "This article discusses how both online and hands-on instruction are changing training for machine automation professionals."
+  },
+  {
+    "title": "SLOPE-100 Compact PLC Trainer - Mechatronics Training",
+    "link": "https://mechatronicstraining.com/slope-100-compact-plc-trainer-portable-hands-on-i-o-trainer-mechatronics-training/",
+    "domain": "mechatronicstraining.com",
+    "snippet": "Built on the CLICK PLC platform, it gives students hands-on practice with real I/O, indicator lights, pushbuttons, and an audible buzzer \u2014 all wired and ready ..."
+  },
+  {
+    "title": "Understanding PLC Lights: Importance and Indicators",
+    "link": "https://www.linkedin.com/posts/vincent-onyedikachi-okolo-749095b2_plc-lightsor-more-accurately-indicator-activity-7384949351745253376-sIkW",
+    "domain": "www.linkedin.com",
+    "snippet": "... Safety: Fault indicators help prevent damage or unsafe conditions by alerting operators early. Efficiency: Reduces downtime by speeding up ..."
+  },
+  {
+    "title": "Lock Indicators: Special Knowledge or Common Knowledge?",
+    "link": "https://idighardware.com/2025/08/lock-indicators-special-knowledge-or-common-knowledge/",
+    "domain": "idighardware.com",
+    "snippet": "Indicator locks are recommended for classroom doors in the guidelines published by the Partner Alliance for Safer Schools (PASS) and this ..."
+  },
+  {
+    "title": "CLICK and CLICK Plus PLCs",
+    "link": "https://www.directautomation.com.au/media/catalog/category/CL-CLICK-PLC-Overview.pdf",
+    "domain": "www.directautomation.com.au",
+    "snippet": "Data logging, Wi-Fi connectability, MQTT communication and increased security measures are just a few of the impressive features offered with the new. CLICK ..."
+  },
+  {
+    "title": "Automation Direct PLC Trainer - Click (Koyo) Training",
+    "link": "https://www.ebay.com/itm/282520044135",
+    "domain": "www.ebay.com",
+    "snippet": "This is the perfect low cost trainer, great for students or company's that want to bring their employees up to speed on PLC controls, its a complete package ..."
+  },
+  {
+    "title": "Automation Direct - PLC Trainers (kits)",
+    "link": "https://www.plccable.com/automation-direct/?srsltid=AfmBOoq9kHhICWY0IFRE3GuzQnCNSKC7X8kYijV2ODPxwyxsW37L1-jG",
+    "domain": "www.plccable.com",
+    "snippet": "PLC Cables Inc, Automation Direct PLC Trainer - Click Plus Ethernet Digital (Koyo) Training. Now: $379.99. Add to Cart."
+  },
+  {
+    "title": "Automation Direct Training Videos",
+    "link": "https://plcmentor.com/Training-Videos/PLC-Training-Videos/Automation-Direct",
+    "domain": "plcmentor.com",
+    "snippet": "Web Classroom Online Training \u00b7 Articles \u00b7 The PLCMentor Training Method \u00b7 PLC Tutorial \u00b7 Operator Interface Systems \u00b7 SCADA System Tutorial \u00b7 Newsletters."
+  },
+  {
+    "title": "Why Engineers Need PLC Training",
+    "link": "https://library.automationdirect.com/engineers-need-plc-training/?utm_source=adc-newsletter&utm_medium=email&utm_campaign=2-26-15",
+    "domain": "library.automationdirect.com",
+    "snippet": "Learn why engineers need PLC training! It's beneficial to any industry engineer, from the complete beginner to even the most experienced."
+  },
+  {
+    "title": "Educational Programs at AutomationDirect",
+    "link": "https://about.automationdirect.com/education/hardware.html",
+    "domain": "about.automationdirect.com",
+    "snippet": "With the FREE (to download) CLICK software and super-low prices on CLICK PLCs, some schools simply require each student to purchase a CLICK PLC (starting at $ ..."
+  },
+  {
+    "title": "CLICK/CLICK PLUS PLC Programming",
+    "link": "https://www.automationdirect.com/clickplcs/clickplus/getting-started/programming?srsltid=AfmBOoreuJVJ5O2MklW87eghXz5bYzhBa1TpPtFKQhQdsU8IU8x4-OmY",
+    "domain": "www.automationdirect.com",
+    "snippet": "It's easy to insert and configure instructions with CLICK. Simply drag the desired instruction from the right-hand pane in the software, and drop it onto one ..."
+  },
+  {
+    "title": "What Is a PLC? Basics of PLCs Featuring the CLICK PLC from ...",
+    "link": "https://www.automationdirect.com/videos/video?videoToPlay=iWgHqqunsyE",
+    "domain": "www.automationdirect.com",
+    "snippet": "We'll show in quick step-by-step sessions how to set up programs and test simple PLC programs to help get you off the ground. Until next time, thank you for ..."
+  },
+  {
+    "title": "How To Control a Sure Step Stepping System with a CLICK PLC ...",
+    "link": "https://www.automationdirect.com/videos/video?videoToPlay=6v36ZCKrD2o",
+    "domain": "www.automationdirect.com",
+    "snippet": "This video covers how to control a Sure Step Stepping System using a CLICK PLC. Online Support Page: https://community.automationdirect.com/s/"
+  },
+  {
+    "title": "Automation Direct CLICK PLC CPU Modules",
+    "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-21-166-02",
+    "domain": "www.cisa.gov",
+    "snippet": "Automation Direct also recommends users follow its security guidelines. CISA recommends users take defensive measures to minimize the risk of ..."
+  },
+  {
+    "title": "Internal Database Security Advisory: SA-00037",
+    "link": "https://community.automationdirect.com/s/internal-database-security-advisory/a4GPE0000003yZ72AI/sa00037",
+    "domain": "community.automationdirect.com",
+    "snippet": "Update the Productivity Suite programming software to version 4.2.0.x or higher. Update Productivity PLC's firmware to the latest version."
+  },
+  {
+    "title": "AutomationDirect CLICK Ethernet Setup",
+    "link": "https://cdn.automationdirect.com/static/helpfiles/c-more/cm5/Content/500.htm?TocPath=PLC%20Setup%7CAutomationDirect%7CCLICK%20Ethernet%20Setup%7C_____0",
+    "domain": "cdn.automationdirect.com",
+    "snippet": "PLC Port (0-65535). Specifies the destination TCP port number that C-more will send to the CLICK CPU. The default is 502. This number may need ..."
+  }
+]

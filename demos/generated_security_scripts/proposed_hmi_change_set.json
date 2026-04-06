@@ -1,0 +1,68 @@
+{
+  "target": "CLICK PLC classroom trainer",
+  "review_status": "draft_for_operator_review",
+  "generated_from_modules": [
+    "default_accounts_review",
+    "password_policy",
+    "segmentation_and_subnets",
+    "industrial_protocol_review",
+    "firmware_and_diagnostics"
+  ],
+  "required_human_checks": [
+    "Confirm each current value before editing.",
+    "Validate each proposed value against the classroom lesson objective.",
+    "Reject any proposal that conflicts with vendor guidance or lab constraints."
+  ],
+  "settings": [
+    {
+      "setting_id": "accounts.default_accounts",
+      "location_hint": "HMI or engineering workstation account configuration screen",
+      "current_value": "TO_BE_RECORDED_BY_OPERATOR",
+      "proposed_value": [],
+      "operator_action": "Disable, remove, or rename any default/shared accounts after confirming replacements exist.",
+      "rationale": "Defaults and shared credentials are high-risk in PLC environments."
+    },
+    {
+      "setting_id": "accounts.password_policy.min_length",
+      "location_hint": "HMI or engineering workstation password policy screen",
+      "current_value": "TO_BE_RECORDED_BY_OPERATOR",
+      "proposed_value": 12,
+      "operator_action": "Set minimum password length to at least 12 if the platform supports it.",
+      "rationale": "Classroom systems should still demonstrate strong password policy configuration."
+    },
+    {
+      "setting_id": "accounts.password_policy.complexity_enabled",
+      "location_hint": "HMI or engineering workstation password policy screen",
+      "current_value": "TO_BE_RECORDED_BY_OPERATOR",
+      "proposed_value": true,
+      "operator_action": "Enable complexity requirements if the platform supports them.",
+      "rationale": "Classroom systems should still demonstrate strong password policy configuration."
+    },
+    {
+      "setting_id": "network.segmentation.enabled",
+      "location_hint": "Network configuration screen or supporting gateway/firewall management view",
+      "current_value": "TO_BE_RECORDED_BY_OPERATOR",
+      "proposed_value": true,
+      "operator_action": "Confirm network segmentation is enabled or documented in the classroom environment.",
+      "rationale": "OT access should be narrowed to approved management paths."
+    },
+    {
+      "setting_id": "network.allowed_management_subnets",
+      "location_hint": "Management access control or allowlist configuration screen",
+      "current_value": "TO_BE_RECORDED_BY_OPERATOR",
+      "proposed_value": [
+        "TO_BE_FILLED_WITH_APPROVED_CLASSROOM_SUBNET"
+      ],
+      "operator_action": "Restrict management access to the approved classroom engineering subnet.",
+      "rationale": "OT access should be narrowed to approved management paths."
+    },
+    {
+      "setting_id": "services.modbus.enabled",
+      "location_hint": "Protocol/service configuration",
+      "current_value": "TO_BE_RECORDED_BY_OPERATOR",
+      "proposed_value": "REVIEW_REQUIRED",
+      "operator_action": "Disable Modbus if it is not needed for the classroom exercise; otherwise document and protect the path.",
+      "rationale": "Protocol availability should be documented and protected, especially Modbus-related paths."
+    }
+  ]
+}

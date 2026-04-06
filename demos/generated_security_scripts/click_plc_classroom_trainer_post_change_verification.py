@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Post-change verification helper for CLICK PLC.
+"""Post-change verification helper for CLICK PLC classroom trainer.
 
 Authorized use only. This script validates recorded post-change evidence and
 does not send write operations to PLC or HMI systems.
+It is designed for offline evidence review only.
 """
 
 from __future__ import annotations
@@ -13,8 +14,8 @@ from pathlib import Path
 from typing import Any
 
 
-TARGET_NAME = 'CLICK PLC'
-LOCAL_SIGNALS = ['default credentials', 'network segmentation', 'remote administration', 'unencrypted management']
+TARGET_NAME = 'CLICK PLC classroom trainer'
+LOCAL_SIGNALS = ['network segmentation']
 REQUIRED_EXPECTATIONS = {
     "default_accounts_disabled": True,
     "password_min_length": 12,
@@ -63,7 +64,7 @@ def write_report(output: Path, findings: list[str]) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Validate supplied post-change evidence without changing PLC or HMI settings.")
     parser.add_argument("--evidence-json", default="post_change_observations.json", help="JSON with post-change observation fields.")
-    parser.add_argument("--output", default="click_plc_post_change_verification.txt", help="Output report path.")
+    parser.add_argument("--output", default="click_plc_classroom_trainer_post_change_verification.txt", help="Output report path.")
     args = parser.parse_args()
 
     data = load_json(Path(args.evidence_json))

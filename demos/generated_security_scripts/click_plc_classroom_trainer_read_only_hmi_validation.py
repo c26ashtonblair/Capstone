@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Read-only HMI/PLC validation helper for CLICK PLC.
+"""Read-only HMI/PLC validation helper for CLICK PLC classroom trainer.
 
 Authorized use only. This script does not send write operations. It records
 operator-supplied observations and validates them against a defensive baseline.
+It is intended for offline evidence review, not direct PLC control.
 """
 
 from __future__ import annotations
@@ -12,9 +13,9 @@ import csv
 from pathlib import Path
 
 
-TARGET_NAME = 'CLICK PLC'
-LOCAL_SIGNALS = ['default credentials', 'network segmentation', 'remote administration', 'unencrypted management']
-REFERENCE_LINKS = ['https://www.reddit.com/r/PLC/comments/141hi90/click_plc_password/', 'https://community.automationdirect.com/s/question/0D53u000038WdV3CAK/resolved-click-v300-forced-password', 'https://www.plctalk.net/forums/threads/plc-direct-password.27544/', 'https://www.directautomation.com.au/media/catalog/category/CL-CLICK-PLC-Overview.pdf', 'https://cdn.automationdirect.com/static/helpfiles/click/Content/279.htm', 'https://www.automationdirect.com/videos/video?videoToPlay=eiORDSJ8LZs', 'https://www.cisa.gov/news-events/ics-advisories/icsa-21-166-02', 'https://www.tecon.cz/pdf/c2userm.pdf']
+TARGET_NAME = 'CLICK PLC classroom trainer'
+LOCAL_SIGNALS = ['network segmentation']
+REFERENCE_LINKS = ['https://www.nozominetworks.com/blog/breaking-the-encryption-analyzing-the-automationdirect-click-plus-plc-protocol', 'https://www.cisa.gov/news-events/ics-advisories/icsa-26-022-02', 'https://community.automationdirect.com/s/internal-database-security-advisory/a4GDp000000oojmMAA/sa00019', 'https://www.compliance-labs.com/topic/nist-sp-800-82/plc-security-boost-your-defenses-with-top-20-secure-practices/', 'https://fluchsfriction.medium.com/one-year-of-top-20-secure-plc-coding-practices-c2f0042ad4a2', 'https://www.cisa.gov/news-events/ics-advisories/icsa-25-266-01', 'https://support.rockwellautomation.com/app/answers/answer_view/a_id/546987/~/rockwell-automation-customer-hardening-guidelines', 'https://www.linkedin.com/pulse/proactive-steps-you-can-take-protect-plcs-from-cyber-attacks-kpasc']
 EXPECTED_CHECKS = [
     "default accounts disabled",
     "strong password policy configured",
@@ -72,7 +73,7 @@ def write_report(output: Path, findings: list[str]) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Validate operator-recorded HMI observations without changing settings.")
     parser.add_argument("--observations", default="hmi_read_only_observations.csv", help="CSV with check,status,detail columns.")
-    parser.add_argument("--output", default="click_plc_read_only_hmi_report.txt", help="Output report path.")
+    parser.add_argument("--output", default="click_plc_classroom_trainer_read_only_hmi_report.txt", help="Output report path.")
     args = parser.parse_args()
 
     findings = evaluate_observations(Path(args.observations))

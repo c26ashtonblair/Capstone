@@ -1,0 +1,76 @@
+SC-PRJ  
+SC-NICK 
+SC-DVIEW
+SC-SCR  
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Arial;}}
+\viewkind4\uc1\pard\fs20 Red Light
+\par 
+\par }
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Arial;}}
+\viewkind4\uc1\pard\fs20 Green Light
+\par 
+\par }
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Arial;}}
+\viewkind4\uc1\pard\fs20 Blue Light
+\par 
+\par }
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Arial;}}
+\viewkind4\uc1\pard\fs20 Buzzer
+\par 
+\par }
+SC-CMORE
+_Always_ON,DISCRETE,SC1
+_1st_SCAN,DISCRETE,SC2
+_SCAN_Clock,DISCRETE,SC3
+_10ms_Clock,DISCRETE,SC4
+_100ms_Clock,DISCRETE,SC5
+_500ms_Clock,DISCRETE,SC6
+_1sec_Clock,DISCRETE,SC7
+_1min_Clock,DISCRETE,SC8
+_1hour_Clock,DISCRETE,SC9
+_Mode_Switch,DISCRETE,SC10
+_PLC_Mode,DISCRETE,SC11
+_PLC Error,DISCRETE,SC19
+_I/O Module Error,DISCRETE,SC20
+_System Config Error,DISCRETE,SC21
+_I/O Config Error,DISCRETE,SC22
+_Memory Check Error,DISCRETE,SC23
+_Project File Error,DISCRETE,SC24
+_Firmware Version Error,DISCRETE,SC25
+_Watchdog Timer Error,DISCRETE,SC26
+_Lost SDRAM Data,DISCRETE,SC27
+_Battery Low Voltage,DISCRETE,SC28
+_Battery Replacement,DISCRETE,SC29
+_Division_Error,DISCRETE,SC40
+_Out_of_Range,DISCRETE,SC43
+_Address_Error,DISCRETE,SC44
+_Math_Operation_Error,DISCRETE,SC46
+_PLC_Mode_Change_to_STOP,DISCRETE,SC50
+_Watchdog_Timer_Reset,DISCRETE,SC51
+_Port_2_Ready_Flag,DISCRETE,SC100
+_Port_2_Error_Flag,DISCRETE,SC101
+_Port_3_Ready_Flag,DISCRETE,SC102
+_Port_3_Error_Flag,DISCRETE,SC103
+_Fixed_Scan_Mode,DISCRETE,SC202
+_Battery_Installed,DISCRETE,SC203
+_PLC_Error_Code,SIGNED_INT_16,SD1
+_Firmware_Version_L,SIGNED_INT_16,SD5
+_Firmware_Version_H,SIGNED_INT_16,SD6
+_Scan_Counter,SIGNED_INT_16,SD9
+_Current_Scan_Time,SIGNED_INT_16,SD10
+_Minimum_Scan_Time,SIGNED_INT_16,SD11
+_Maximum_Scan_Time,SIGNED_INT_16,SD12
+_Fixed_Scan_Time_Setup,SIGNED_INT_16,SD13
+_RTC_Year,SIGNED_INT_16,SD20
+_RTC_Month,SIGNED_INT_16,SD21
+_RTC_Day,SIGNED_INT_16,SD22
+_RTC_Day_of_The_Week,SIGNED_INT_16,SD23
+_RTC_Hour,SIGNED_INT_16,SD24
+_RTC_Minute,SIGNED_INT_16,SD25
+_RTC_Second,SIGNED_INT_16,SD26
+_Port1_Received_Data_Len,SIGNED_INT_16,SD40
+_Port1_No_Comm_Time,SIGNED_INT_16,SD41
+_Port2_Received_Data_Len,SIGNED_INT_16,SD50
+_Port2_No_Comm_Time,SIGNED_INT_16,SD51
+_Port3_Received_Data_Len,SIGNED_INT_16,SD60
+_Port3_No_Comm_Time,SIGNED_INT_16,SD61

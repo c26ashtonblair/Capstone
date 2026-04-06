@@ -9,6 +9,7 @@ import threading
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Sequence
+from urllib.parse import urlparse
 
 from dotenv import load_dotenv
 
@@ -232,6 +233,17 @@ class RagResources:
     index_dir: Path
 
 
+@dataclass(frozen=True)
+class CheckModule:
+    module_id: str
+    title: str
+    rationale: str
+    trigger_terms: tuple[str, ...]
+    config_checks: tuple[dict[str, Any], ...] = ()
+    text_checks: tuple[dict[str, Any], ...] = ()
+    inventory_checks: tuple[dict[str, Any], ...] = ()
+
+
 class SecurityScriptAgent:
     """Agent-style workflow that combines web context and local files."""
 
@@ -422,6 +434,8 @@ class SecurityScriptAgent:
             f"{target} default credentials ports protocols",
             f"{target} installation manual security configuration",
             f"{target} network segmentation firewall guidance",
+            f"{target} backup restore configuration export",
+            f"{target} firmware version diagnostics error codes",
         ]
         file_terms: List[str] = []
         for context in local_files:
@@ -438,10 +452,38 @@ class SecurityScriptAgent:
                     [
                         f"{target} {phrase}",
                         f"{target} {phrase} security",
+                        f"{target} {phrase} site:automationdirect.com",
                     ]
                 )
+            file_terms.extend(self._build_project_specific_queries(target, context))
         queries = [*extra_queries, *base_queries, *file_terms]
         return list(dict.fromkeys(query for query in queries if query.strip()))[:18]
+
+    def _build_project_specific_queries(self, target: str, context: LocalContextFile) -> List[str]:
+        lowered = context.excerpt.lower()
+        queries: List[str] = []
+        if any(token in lowered for token in ("firmware", "_firmware_version", "firmware_version")):
+            queries.extend(
+                [
+                    f"{target} firmware version error diagnostics",
+                    f"{target} firmware version release notes",
+                ]
+            )
+        if any(token in lowered for token in ("modbus", "port_2", "port_3", "received_data_len")):
+            queries.extend(
+                [
+                    f"{target} modbus communication security",
+                    f"{target} serial port hardening rs-232 rs-485",
+                ]
+            )
+        if any(token in lowered for token in ("battery", "lost sdram data", "_plc error", "watchdog")):
+            queries.extend(
+                [
+                    f"{target} watchdog battery low voltage troubleshooting",
+                    f"{target} maintenance backup error history",
+                ]
+            )
+        return queries
 
     def generate(self, target: str, local_paths: Sequence[Path], output_dir: Path, extra_queries: Sequence[str] | None = None) -> Dict[str, Path]:
         extra_queries = extra_queries or []
@@ -452,36 +494,51 @@ class SecurityScriptAgent:
         summary = self._build_summary(target, local_files, web_docs, queries)
         plan = self._build_plan(target, local_files, web_docs)
         script = self._build_script(target, local_files, web_docs)
-        read_only_script = self._build_read_only_hmi_validation_script(target, local_files, web_docs)
-        runbook = self._build_approved_change_runbook(target, local_files, web_docs)
+        change_set = self._build_proposed_hmi_change_set(target, local_files, web_docs)
+        pre_change_checklist = self._build_pre_change_checklist(target, local_files, web_docs)
+        runbook = self._build_operator_execution_runbook(target, local_files, web_docs)
+        rollback_plan = self._build_rollback_plan(target, local_files, web_docs)
         verification_script = self._build_post_change_verification_script(target, local_files, web_docs)
+        manifest = self._build_manifest(target, local_files, web_docs, queries)
+        web_sources = self._build_web_sources(web_docs)
 
         output_dir.mkdir(parents=True, exist_ok=True)
         summary_path = output_dir / "security_research_brief.md"
         plan_path = output_dir / "generated_security_test_plan.md"
         script_name = f"{_sanitize_identifier(target)}_security_baseline.py"
         script_path = output_dir / script_name
-        read_only_path = output_dir / f"{_sanitize_identifier(target)}_read_only_hmi_validation.py"
-        runbook_path = output_dir / "approved_change_runbook.md"
+        change_set_path = output_dir / "proposed_hmi_change_set.json"
+        pre_change_path = output_dir / "pre_change_checklist.md"
+        runbook_path = output_dir / "operator_execution_runbook.md"
+        rollback_path = output_dir / "rollback_plan.md"
         verification_path = output_dir / f"{_sanitize_identifier(target)}_post_change_verification.py"
+        manifest_path = output_dir / "offline_generation_manifest.json"
+        web_sources_path = output_dir / "web_research_sources.json"
 
         summary_path.write_text(summary, encoding="utf-8")
         plan_path.write_text(plan, encoding="utf-8")
         script_path.write_text(script, encoding="utf-8")
-        read_only_path.write_text(read_only_script, encoding="utf-8")
+        change_set_path.write_text(json.dumps(change_set, indent=2) + "\n", encoding="utf-8")
+        pre_change_path.write_text(pre_change_checklist, encoding="utf-8")
         runbook_path.write_text(runbook, encoding="utf-8")
+        rollback_path.write_text(rollback_plan, encoding="utf-8")
         verification_path.write_text(verification_script, encoding="utf-8")
+        manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+        web_sources_path.write_text(json.dumps(web_sources, indent=2) + "\n", encoding="utf-8")
         os.chmod(script_path, 0o755)
-        os.chmod(read_only_path, 0o755)
         os.chmod(verification_path, 0o755)
 
         return {
             "summary": summary_path,
             "plan": plan_path,
             "script": script_path,
-            "read_only_validation": read_only_path,
-            "change_runbook": runbook_path,
+            "proposed_change_set": change_set_path,
+            "pre_change_checklist": pre_change_path,
+            "operator_runbook": runbook_path,
+            "rollback_plan": rollback_path,
             "post_change_verification": verification_path,
+            "manifest": manifest_path,
+            "web_sources": web_sources_path,
         }
 
     def _extract_indicators(self, text: str) -> List[str]:
@@ -536,6 +593,222 @@ class SecurityScriptAgent:
                 overflow.append(item)
         return balanced + overflow[:6]
 
+    def _check_module_catalog(self) -> List[CheckModule]:
+        return [
+            CheckModule(
+                module_id="default_accounts_review",
+                title="Default account review",
+                rationale="Defaults and shared credentials are high-risk in PLC environments.",
+                trigger_terms=("default credentials", "default password", "accounts", "admin"),
+                config_checks=(
+                    {
+                        "kind": "dict_value_empty",
+                        "path": "accounts.default_accounts",
+                        "severity": "FAIL",
+                        "message": "default accounts are present",
+                    },
+                ),
+                text_checks=(
+                    {
+                        "kind": "forbidden_substring",
+                        "needles": ["default password", "admin:admin", "admin/admin"],
+                        "severity": "WARN",
+                        "message": "text export mentions a default credential pattern",
+                    },
+                ),
+            ),
+            CheckModule(
+                module_id="password_policy",
+                title="Password policy strength",
+                rationale="Classroom systems should still demonstrate strong password policy configuration.",
+                trigger_terms=("password", "credential", "policy"),
+                config_checks=(
+                    {
+                        "kind": "min_int",
+                        "path": "accounts.password_policy.min_length",
+                        "min": 12,
+                        "severity": "FAIL",
+                        "message": "password minimum length is below 12",
+                    },
+                    {
+                        "kind": "bool_true",
+                        "path": "accounts.password_policy.complexity_enabled",
+                        "severity": "WARN",
+                        "message": "password complexity is not enabled",
+                    },
+                ),
+            ),
+            CheckModule(
+                module_id="segmentation_and_subnets",
+                title="Segmentation and management subnet restrictions",
+                rationale="OT access should be narrowed to approved management paths.",
+                trigger_terms=("network segmentation", "firewall", "vlan", "subnet", "dmz"),
+                config_checks=(
+                    {
+                        "kind": "bool_true",
+                        "path": "network.segmentation.enabled",
+                        "severity": "WARN",
+                        "message": "network segmentation is not enabled",
+                    },
+                    {
+                        "kind": "non_empty",
+                        "path": "network.allowed_management_subnets",
+                        "severity": "WARN",
+                        "message": "allowed management subnets are not defined",
+                    },
+                ),
+            ),
+            CheckModule(
+                module_id="remote_admin_hardening",
+                title="Remote administration hardening",
+                rationale="Remote administration should be limited and tied to restricted paths.",
+                trigger_terms=("remote administration", "remote access", "vpn", "ssh", "rdp"),
+                config_checks=(
+                    {
+                        "kind": "bool_requires_non_empty",
+                        "path": "services.remote_admin.enabled",
+                        "requires_path": "network.allowed_management_subnets",
+                        "severity": "WARN",
+                        "message": "remote admin is enabled without allowed management subnets",
+                    },
+                ),
+                inventory_checks=(
+                    {
+                        "kind": "service_exposure",
+                        "services": ["ssh", "rdp", "vnc"],
+                        "severity": "WARN",
+                        "message": "remote administration service appears in inventory; verify restriction to approved paths",
+                    },
+                ),
+            ),
+            CheckModule(
+                module_id="web_transport_security",
+                title="Web management transport security",
+                rationale="If a web interface exists, plaintext transport should be flagged.",
+                trigger_terms=("unencrypted management", "http", "plaintext", "web"),
+                config_checks=(
+                    {
+                        "kind": "bool_requires_true",
+                        "path": "services.web.enabled",
+                        "requires_path": "services.tls.enabled",
+                        "severity": "WARN",
+                        "message": "web management is enabled without TLS",
+                    },
+                ),
+                inventory_checks=(
+                    {
+                        "kind": "service_exposure",
+                        "services": ["http", "telnet"],
+                        "severity": "WARN",
+                        "message": "plaintext management service appears in inventory",
+                    },
+                    {
+                        "kind": "public_exposure",
+                        "severity": "FAIL",
+                        "message": "public or internet exposure appears in inventory",
+                    },
+                ),
+            ),
+            CheckModule(
+                module_id="industrial_protocol_review",
+                title="Industrial protocol exposure review",
+                rationale="Protocol availability should be documented and protected, especially Modbus-related paths.",
+                trigger_terms=("industrial protocols", "modbus", "rs-232", "rs-485", "port_2", "port_3"),
+                config_checks=(
+                    {
+                        "kind": "bool_requires_true",
+                        "path": "services.modbus.enabled",
+                        "requires_path": "services.modbus.secure_transport",
+                        "severity": "WARN",
+                        "message": "Modbus is enabled without a documented secure transport or tunnel flag",
+                    },
+                ),
+                inventory_checks=(
+                    {
+                        "kind": "port_presence",
+                        "ports": ["502"],
+                        "severity": "WARN",
+                        "message": "Modbus-related service appears in the service inventory",
+                    },
+                ),
+            ),
+            CheckModule(
+                module_id="firmware_and_diagnostics",
+                title="Firmware and diagnostic evidence capture",
+                rationale="Version and diagnostic state should be captured in exported evidence for review.",
+                trigger_terms=("firmware update", "firmware", "watchdog", "error code", "battery", "scan time"),
+                text_checks=(
+                    {
+                        "kind": "required_substring",
+                        "needles": ["firmware", "_firmware_version", "error", "watchdog"],
+                        "severity": "INFO",
+                        "message": "project text includes firmware/diagnostic indicators for follow-up review",
+                    },
+                ),
+                config_checks=(
+                    {
+                        "kind": "non_empty",
+                        "path": "controller.firmware_version",
+                        "severity": "WARN",
+                        "message": "controller firmware version is not captured in exports",
+                    },
+                ),
+            ),
+            CheckModule(
+                module_id="backup_and_recovery_evidence",
+                title="Backup and recovery evidence",
+                rationale="Project backup and rollback evidence should exist before classroom changes are demonstrated.",
+                trigger_terms=("backup", "restore", "project file", "recovery"),
+                config_checks=(
+                    {
+                        "kind": "non_empty",
+                        "path": "evidence.last_backup_date",
+                        "severity": "WARN",
+                        "message": "last backup date is not recorded in exported evidence",
+                    },
+                ),
+            ),
+        ]
+
+    def _select_check_modules(
+        self,
+        target: str,
+        local_files: Sequence[LocalContextFile],
+        web_docs: Sequence[Dict[str, str]],
+    ) -> List[CheckModule]:
+        corpus_parts = [target.lower()]
+        for item in local_files:
+            corpus_parts.append(" ".join(item.indicators).lower())
+            corpus_parts.append(" ".join(item.keyphrases).lower())
+            corpus_parts.append(item.excerpt.lower())
+        for item in web_docs[:12]:
+            corpus_parts.append((item.get("title") or "").lower())
+            corpus_parts.append((item.get("snippet") or "").lower())
+        corpus = "\n".join(corpus_parts)
+
+        selected: List[CheckModule] = []
+        for module in self._check_module_catalog():
+            if any(term.lower() in corpus for term in module.trigger_terms):
+                selected.append(module)
+
+        if not selected:
+            selected = self._check_module_catalog()[:4]
+
+        selected_ids = {module.module_id for module in selected}
+        if "default_accounts_review" not in selected_ids:
+            selected.insert(0, self._check_module_catalog()[0])
+        if "password_policy" not in selected_ids:
+            selected.insert(1, self._check_module_catalog()[1])
+
+        deduped: List[CheckModule] = []
+        seen = set()
+        for module in selected:
+            if module.module_id in seen:
+                continue
+            seen.add(module.module_id)
+            deduped.append(module)
+        return deduped
+
     def _build_summary(
         self,
         target: str,
@@ -543,9 +816,20 @@ class SecurityScriptAgent:
         web_docs: Sequence[Dict[str, str]],
         queries: Sequence[str],
     ) -> str:
+        modules = self._select_check_modules(target, local_files, web_docs)
         lines = [f"# Security Research Brief: {target}", "", "## Intent", ""]
         lines.append(
-            "Generate defensive, authorized validation scripts using local project files and publicly available security guidance."
+            "Generate defensive, authorized operator review packages using local project files and publicly available security guidance."
+        )
+        lines.extend(
+            [
+                "",
+                "## Safety Boundary",
+                "",
+                "- Generation may use web research when configured.",
+                "- Generated artifacts are offline-only and must not write to PLC, HMI, or field devices.",
+                "- Outputs are intended for exported files, human-reviewed change packages, and post-change evidence review.",
+            ]
         )
         lines.extend(["", "## Local Context", ""])
         if not local_files:
@@ -562,6 +846,12 @@ class SecurityScriptAgent:
         for query in queries:
             lines.append(f"- {query}")
 
+        lines.extend(["", "## Selected Check Modules", ""])
+        for module in modules:
+            lines.append(f"- {module.title}")
+            lines.append(f"  Module ID: `{module.module_id}`")
+            lines.append(f"  Why selected: {module.rationale}")
+
         lines.extend(["", "## Web Findings", ""])
         if not web_docs:
             lines.append("- No web results collected. Check `SERPAPI_KEY` if web context is expected.")
@@ -576,10 +866,11 @@ class SecurityScriptAgent:
 
     def _build_plan(self, target: str, local_files: Sequence[LocalContextFile], web_docs: Sequence[Dict[str, str]]) -> str:
         indicators = sorted({indicator for item in local_files for indicator in item.indicators})
+        modules = self._select_check_modules(target, local_files, web_docs)
         lines = [
             f"# Generated Security Test Plan: {target}",
             "",
-            "This plan is limited to authorized, defensive validation. It excludes exploitation and destructive testing.",
+            "This plan is limited to authorized, defensive validation. It excludes exploitation, destructive testing, and automated writes to PLC/HMI systems.",
             "",
             "## Priorities",
             "",
@@ -596,22 +887,40 @@ class SecurityScriptAgent:
                 "## Recommended Sequence",
                 "",
                 "1. Review local configuration and implementation files for obvious security assumptions.",
-                "2. Run the offline baseline checker against exported configs and service inventory data.",
-                "3. Run the read-only HMI validation script to collect current settings and evidence without making changes.",
-                "4. Use the approved change runbook for human-reviewed, manual changes only.",
-                "5. Run the post-change verification script to confirm the approved settings are present.",
+                "2. Review `web_research_sources.json` and trim any irrelevant public results before classroom use.",
+                "3. Run the offline baseline checker against exported configs and service inventory data.",
+                "4. Review `proposed_hmi_change_set.json` with a trained operator and confirm each value is appropriate for the classroom system.",
+                "5. Complete `pre_change_checklist.md` before any manual HMI work.",
+                "6. Follow `operator_execution_runbook.md` to apply the approved changes manually through the HMI.",
+                "7. If needed, use `rollback_plan.md` to restore the previous settings.",
+                "8. Run the post-change verification script to confirm the approved settings are present.",
+                "",
+                "## Offline Boundary",
+                "",
+                "- Do not point the generated scripts at live PLC write interfaces.",
+                "- Do not add protocol write operations, forcing commands, or ladder-logic download steps.",
+                "- Treat exported project/config files as the primary automation input for proposed changes.",
                 "",
                 "## Generated Artifacts",
                 "",
                 f"- `{_sanitize_identifier(target)}_security_baseline.py`",
-                f"- `{_sanitize_identifier(target)}_read_only_hmi_validation.py`",
-                "- `approved_change_runbook.md`",
+                "- `proposed_hmi_change_set.json`",
+                "- `pre_change_checklist.md`",
+                "- `operator_execution_runbook.md`",
+                "- `rollback_plan.md`",
                 f"- `{_sanitize_identifier(target)}_post_change_verification.py`",
+                "- `offline_generation_manifest.json`",
+                "- `web_research_sources.json`",
                 "",
-                "## Web Sources",
+                "## Selected Modules",
                 "",
             ]
         )
+        if modules:
+            for module in modules:
+                lines.append(f"- `{module.module_id}` | {module.title}")
+            lines.append("")
+        lines.extend(["## Web Sources", ""])
         if not web_docs:
             lines.append("- None collected.")
         else:
@@ -623,11 +932,24 @@ class SecurityScriptAgent:
         indicator_map = sorted({indicator for item in local_files for indicator in item.indicators})
         evidence_links = [item.get("link", "") for item in web_docs[:8] if item.get("link")]
         target_slug = _sanitize_identifier(target)
+        modules = self._select_check_modules(target, local_files, web_docs)
+        selected_modules = [
+            {
+                "module_id": module.module_id,
+                "title": module.title,
+                "rationale": module.rationale,
+                "config_checks": list(module.config_checks),
+                "text_checks": list(module.text_checks),
+                "inventory_checks": list(module.inventory_checks),
+            }
+            for module in modules
+        ]
         return f"""#!/usr/bin/env python3
 \"\"\"Defensive baseline security validation script for {target}.
 
 Authorized use only. This script performs non-destructive checks against
 exported configurations and operator-supplied service inventory data.
+It does not connect to or write to PLC, HMI, or field devices.
 \"\"\"
 
 from __future__ import annotations
@@ -643,6 +965,7 @@ TARGET_NAME = {target!r}
 TARGET_SLUG = {target_slug!r}
 LOCAL_SIGNALS = {indicator_map!r}
 REFERENCE_LINKS = {evidence_links!r}
+SELECTED_MODULES = {selected_modules!r}
 
 
 def load_structured_file(path: Path) -> Any:
@@ -664,21 +987,6 @@ def get_nested(data: Any, dotted_key: str) -> Any:
 
 def check_config_exports(config_dir: Path) -> list[dict[str, str]]:
     findings: list[dict[str, str]] = []
-    required_keys = [
-        "accounts",
-        "services",
-        "network",
-    ]
-    recommended_paths = [
-        "accounts.default_accounts",
-        "accounts.password_policy.min_length",
-        "network.allowed_management_subnets",
-        "network.segmentation.enabled",
-        "services.remote_admin.enabled",
-        "services.web.enabled",
-        "services.modbus.enabled",
-        "services.tls.enabled",
-    ]
 
     for path in sorted(config_dir.glob("*")):
         if path.suffix.lower() not in {{".json", ".txt", ".cfg", ".conf", ".yaml", ".yml"}}:
@@ -690,36 +998,14 @@ def check_config_exports(config_dir: Path) -> list[dict[str, str]]:
             continue
 
         if isinstance(data, dict):
-            for key in required_keys:
-                if key not in data:
-                    findings.append({{"severity": "WARN", "file": path.name, "check": key, "detail": "missing top-level section"}})
-            for dotted in recommended_paths:
-                if get_nested(data, dotted) is None:
-                    findings.append({{"severity": "WARN", "file": path.name, "check": dotted, "detail": "missing recommended setting"}})
-
-            min_length = get_nested(data, "accounts.password_policy.min_length")
-            if isinstance(min_length, int) and min_length < 12:
-                findings.append({{"severity": "FAIL", "file": path.name, "check": "password length", "detail": f"min length {{min_length}} < 12"}})
-
-            default_accounts = get_nested(data, "accounts.default_accounts")
-            if default_accounts:
-                findings.append({{"severity": "FAIL", "file": path.name, "check": "default accounts", "detail": f"present: {{default_accounts}}"}})
-
-            remote_admin = get_nested(data, "services.remote_admin.enabled")
-            allowed_subnets = get_nested(data, "network.allowed_management_subnets")
-            if remote_admin and not allowed_subnets:
-                findings.append({{"severity": "WARN", "file": path.name, "check": "remote admin restrictions", "detail": "enabled without allowed_management_subnets"}})
-
-            tls_enabled = get_nested(data, "services.tls.enabled")
-            web_enabled = get_nested(data, "services.web.enabled")
-            if web_enabled and not tls_enabled:
-                findings.append({{"severity": "WARN", "file": path.name, "check": "web transport", "detail": "web enabled without tls.enabled"}})
+            for module in SELECTED_MODULES:
+                for check in module.get("config_checks", []):
+                    findings.extend(run_config_check(path.name, data, module["module_id"], check))
         else:
             lowered = str(data).lower()
-            if "password" in lowered and "default" in lowered:
-                findings.append({{"severity": "WARN", "file": path.name, "check": "plaintext review", "detail": "mentions default password"}})
-            if "telnet" in lowered or "http://" in lowered:
-                findings.append({{"severity": "WARN", "file": path.name, "check": "plaintext protocols", "detail": "mentions insecure management protocol"}})
+            for module in SELECTED_MODULES:
+                for check in module.get("text_checks", []):
+                    findings.extend(run_text_check(path.name, lowered, module["module_id"], check))
     return findings
 
 
@@ -731,15 +1017,76 @@ def check_service_inventory(inventory_file: Path) -> list[dict[str, str]]:
     with inventory_file.open("r", encoding="utf-8", errors="ignore", newline="") as handle:
         reader = csv.DictReader(handle)
         for row in reader:
-            host = row.get("host", "unknown")
-            port = row.get("port", "")
-            service = (row.get("service", "") or "").lower()
-            exposure = (row.get("exposure", "") or "").lower()
+            for module in SELECTED_MODULES:
+                for check in module.get("inventory_checks", []):
+                    findings.extend(run_inventory_check(inventory_file.name, row, module["module_id"], check))
+    return findings
 
-            if port in {{"23", "80"}} or service in {{"telnet", "http"}}:
-                findings.append({{"severity": "WARN", "file": inventory_file.name, "check": f"host {{host}}", "detail": f"insecure management service {{service or port}}"}})
-            if exposure in {{"internet", "public"}}:
-                findings.append({{"severity": "FAIL", "file": inventory_file.name, "check": f"host {{host}}", "detail": "publicly exposed management path"}})
+
+def run_config_check(file_name: str, data: dict[str, Any], module_id: str, check: dict[str, Any]) -> list[dict[str, str]]:
+    findings: list[dict[str, str]] = []
+    kind = check.get("kind")
+    path = check.get("path", "")
+    value = get_nested(data, path) if path else None
+    severity = check.get("severity", "WARN")
+    message = check.get("message", "check failed")
+
+    if kind == "dict_value_empty" and value:
+        findings.append({{"severity": severity, "file": file_name, "check": f"{{module_id}}:{{path}}", "detail": message}})
+    elif kind == "min_int":
+        if value is None:
+            findings.append({{"severity": "WARN", "file": file_name, "check": f"{{module_id}}:{{path}}", "detail": "recommended setting missing"}})
+        elif int(value) < int(check.get("min", 0)):
+            findings.append({{"severity": severity, "file": file_name, "check": f"{{module_id}}:{{path}}", "detail": f"{{message}} (found {{value}})"}})
+    elif kind == "bool_true" and value is not True:
+        findings.append({{"severity": severity, "file": file_name, "check": f"{{module_id}}:{{path}}", "detail": message}})
+    elif kind == "non_empty" and not value:
+        findings.append({{"severity": severity, "file": file_name, "check": f"{{module_id}}:{{path}}", "detail": message}})
+    elif kind == "bool_requires_non_empty":
+        required_value = get_nested(data, check.get("requires_path", ""))
+        if value is True and not required_value:
+            findings.append({{"severity": severity, "file": file_name, "check": f"{{module_id}}:{{path}}", "detail": message}})
+    elif kind == "bool_requires_true":
+        required_value = get_nested(data, check.get("requires_path", ""))
+        if value is True and required_value is not True:
+            findings.append({{"severity": severity, "file": file_name, "check": f"{{module_id}}:{{path}}", "detail": message}})
+    return findings
+
+
+def run_text_check(file_name: str, lowered_text: str, module_id: str, check: dict[str, Any]) -> list[dict[str, str]]:
+    findings: list[dict[str, str]] = []
+    needles = [needle.lower() for needle in check.get("needles", [])]
+    severity = check.get("severity", "WARN")
+    message = check.get("message", "text pattern matched")
+    kind = check.get("kind")
+    if kind == "forbidden_substring" and any(needle in lowered_text for needle in needles):
+        findings.append({{"severity": severity, "file": file_name, "check": module_id, "detail": message}})
+    elif kind == "required_substring" and any(needle in lowered_text for needle in needles):
+        findings.append({{"severity": severity, "file": file_name, "check": module_id, "detail": message}})
+    return findings
+
+
+def run_inventory_check(file_name: str, row: dict[str, str], module_id: str, check: dict[str, Any]) -> list[dict[str, str]]:
+    findings: list[dict[str, str]] = []
+    host = row.get("host", "unknown")
+    port = str(row.get("port", "") or "")
+    service = (row.get("service", "") or "").lower()
+    exposure = (row.get("exposure", "") or "").lower()
+    severity = check.get("severity", "WARN")
+    message = check.get("message", "inventory pattern matched")
+    kind = check.get("kind")
+
+    if kind == "service_exposure":
+        services = {{item.lower() for item in check.get("services", [])}}
+        if service in services or port in services:
+            findings.append({{"severity": severity, "file": file_name, "check": f"{{module_id}}:{{host}}", "detail": message}})
+    elif kind == "public_exposure":
+        if exposure in {{"internet", "public"}}:
+            findings.append({{"severity": severity, "file": file_name, "check": f"{{module_id}}:{{host}}", "detail": message}})
+    elif kind == "port_presence":
+        ports = {{str(item) for item in check.get("ports", [])}}
+        if port in ports:
+            findings.append({{"severity": severity, "file": file_name, "check": f"{{module_id}}:{{host}}", "detail": message}})
     return findings
 
 
@@ -751,6 +1098,9 @@ def write_report(findings: list[dict[str, str]], output: Path) -> None:
         "",
         "Signals from source material:",
         *[f"- {{item}}" for item in LOCAL_SIGNALS],
+        "",
+        "Selected modules:",
+        *[f"- {{module['module_id']}} | {{module['title']}}" for module in SELECTED_MODULES],
         "",
         "Reference links:",
         *[f"- {{link}}" for link in REFERENCE_LINKS],
@@ -783,101 +1133,139 @@ if __name__ == "__main__":
     main()
 """
 
-    def _build_read_only_hmi_validation_script(
+    def _build_proposed_hmi_change_set(
+        self,
+        target: str,
+        local_files: Sequence[LocalContextFile],
+        web_docs: Sequence[Dict[str, str]],
+    ) -> Dict[str, Any]:
+        modules = self._select_check_modules(target, local_files, web_docs)
+        settings = []
+        for module in modules:
+            if module.module_id == "default_accounts_review":
+                settings.append({
+                    "setting_id": "accounts.default_accounts",
+                    "location_hint": "HMI or engineering workstation account configuration screen",
+                    "current_value": "TO_BE_RECORDED_BY_OPERATOR",
+                    "proposed_value": [],
+                    "operator_action": "Disable, remove, or rename any default/shared accounts after confirming replacements exist.",
+                    "rationale": module.rationale,
+                })
+            elif module.module_id == "password_policy":
+                settings.extend([
+                    {
+                        "setting_id": "accounts.password_policy.min_length",
+                        "location_hint": "HMI or engineering workstation password policy screen",
+                        "current_value": "TO_BE_RECORDED_BY_OPERATOR",
+                        "proposed_value": 12,
+                        "operator_action": "Set minimum password length to at least 12 if the platform supports it.",
+                        "rationale": module.rationale,
+                    },
+                    {
+                        "setting_id": "accounts.password_policy.complexity_enabled",
+                        "location_hint": "HMI or engineering workstation password policy screen",
+                        "current_value": "TO_BE_RECORDED_BY_OPERATOR",
+                        "proposed_value": True,
+                        "operator_action": "Enable complexity requirements if the platform supports them.",
+                        "rationale": module.rationale,
+                    },
+                ])
+            elif module.module_id == "segmentation_and_subnets":
+                settings.extend([
+                    {
+                        "setting_id": "network.segmentation.enabled",
+                        "location_hint": "Network configuration screen or supporting gateway/firewall management view",
+                        "current_value": "TO_BE_RECORDED_BY_OPERATOR",
+                        "proposed_value": True,
+                        "operator_action": "Confirm network segmentation is enabled or documented in the classroom environment.",
+                        "rationale": module.rationale,
+                    },
+                    {
+                        "setting_id": "network.allowed_management_subnets",
+                        "location_hint": "Management access control or allowlist configuration screen",
+                        "current_value": "TO_BE_RECORDED_BY_OPERATOR",
+                        "proposed_value": ["TO_BE_FILLED_WITH_APPROVED_CLASSROOM_SUBNET"],
+                        "operator_action": "Restrict management access to the approved classroom engineering subnet.",
+                        "rationale": module.rationale,
+                    },
+                ])
+            elif module.module_id == "remote_admin_hardening":
+                settings.append({
+                    "setting_id": "services.remote_admin.enabled",
+                    "location_hint": "Remote access service configuration",
+                    "current_value": "TO_BE_RECORDED_BY_OPERATOR",
+                    "proposed_value": False,
+                    "operator_action": "Disable remote administration unless a documented classroom use case requires it.",
+                    "rationale": module.rationale,
+                })
+            elif module.module_id == "web_transport_security":
+                settings.extend([
+                    {
+                        "setting_id": "services.web.enabled",
+                        "location_hint": "Embedded web management configuration",
+                        "current_value": "TO_BE_RECORDED_BY_OPERATOR",
+                        "proposed_value": "REVIEW_REQUIRED",
+                        "operator_action": "If web management is not needed, disable it. If needed, keep it restricted to approved management paths.",
+                        "rationale": module.rationale,
+                    },
+                    {
+                        "setting_id": "services.tls.enabled",
+                        "location_hint": "Embedded web management configuration",
+                        "current_value": "TO_BE_RECORDED_BY_OPERATOR",
+                        "proposed_value": True,
+                        "operator_action": "Enable TLS or equivalent secure transport if web management remains enabled.",
+                        "rationale": module.rationale,
+                    },
+                ])
+            elif module.module_id == "industrial_protocol_review":
+                settings.append({
+                    "setting_id": "services.modbus.enabled",
+                    "location_hint": "Protocol/service configuration",
+                    "current_value": "TO_BE_RECORDED_BY_OPERATOR",
+                    "proposed_value": "REVIEW_REQUIRED",
+                    "operator_action": "Disable Modbus if it is not needed for the classroom exercise; otherwise document and protect the path.",
+                    "rationale": module.rationale,
+                })
+        return {
+            "target": target,
+            "review_status": "draft_for_operator_review",
+            "generated_from_modules": [module.module_id for module in modules],
+            "required_human_checks": [
+                "Confirm each current value before editing.",
+                "Validate each proposed value against the classroom lesson objective.",
+                "Reject any proposal that conflicts with vendor guidance or lab constraints.",
+            ],
+            "settings": settings,
+        }
+
+    def _build_pre_change_checklist(
         self,
         target: str,
         local_files: Sequence[LocalContextFile],
         web_docs: Sequence[Dict[str, str]],
     ) -> str:
-        indicator_map = sorted({indicator for item in local_files for indicator in item.indicators})
-        evidence_links = [item.get("link", "") for item in web_docs[:8] if item.get("link")]
-        target_slug = _sanitize_identifier(target)
-        return f"""#!/usr/bin/env python3
-\"\"\"Read-only HMI/PLC validation helper for {target}.
+        modules = self._select_check_modules(target, local_files, web_docs)
+        lines = [
+            f"# Pre-Change Checklist: {target}",
+            "",
+            "Complete this checklist before a trained operator makes any manual HMI changes.",
+            "",
+            "- Confirm the PLC is the classroom/test unit and not connected to production equipment.",
+            "- Record the current value of every setting listed in `proposed_hmi_change_set.json`.",
+            "- Capture screenshots or exports of each HMI page that will be edited.",
+            "- Confirm a recent backup or restorable project file is available.",
+            "- Confirm who is acting as operator, reviewer, and rollback owner.",
+            "- Review the selected modules and remove any proposed change that does not fit the lesson or platform.",
+            "- Confirm post-change evidence collection steps are ready before starting.",
+            "",
+            "## Modules In Scope",
+            "",
+        ]
+        for module in modules:
+            lines.append(f"- `{module.module_id}` | {module.title}")
+        return "\n".join(lines) + "\n"
 
-Authorized use only. This script does not send write operations. It records
-operator-supplied observations and validates them against a defensive baseline.
-\"\"\"
-
-from __future__ import annotations
-
-import argparse
-import csv
-from pathlib import Path
-
-
-TARGET_NAME = {target!r}
-LOCAL_SIGNALS = {indicator_map!r}
-REFERENCE_LINKS = {evidence_links!r}
-EXPECTED_CHECKS = [
-    "default accounts disabled",
-    "strong password policy configured",
-    "management access restricted to approved subnets",
-    "unused services disabled",
-    "secure transport enabled where supported",
-]
-
-
-def evaluate_observations(observation_csv: Path) -> list[str]:
-    findings: list[str] = []
-    if not observation_csv.exists():
-        return ["WARN | observations | file missing; no read-only HMI observations were provided"]
-
-    with observation_csv.open("r", encoding="utf-8", errors="ignore", newline="") as handle:
-        reader = csv.DictReader(handle)
-        observed = list(reader)
-
-    for check in EXPECTED_CHECKS:
-        matched = next((row for row in observed if (row.get("check") or "").strip().lower() == check), None)
-        if not matched:
-            findings.append(f"WARN | {{check}} | not captured")
-            continue
-        status = (matched.get("status") or "").strip().lower()
-        detail = (matched.get("detail") or "").strip() or "no detail provided"
-        if status not in {{"pass", "ok", "true", "yes"}}:
-            findings.append(f"FAIL | {{check}} | {{detail}}")
-    return findings
-
-
-def write_report(output: Path, findings: list[str]) -> None:
-    output.parent.mkdir(parents=True, exist_ok=True)
-    lines = [
-        f"Target: {{TARGET_NAME}}",
-        "Read-only HMI validation report",
-        "",
-        "Signals:",
-        *[f"- {{item}}" for item in LOCAL_SIGNALS],
-        "",
-        "Reference links:",
-        *[f"- {{link}}" for link in REFERENCE_LINKS],
-        "",
-        "Expected checks:",
-        *[f"- {{item}}" for item in EXPECTED_CHECKS],
-        "",
-        "Findings:",
-    ]
-    if not findings:
-        lines.append("- PASS | all supplied read-only checks matched the expected baseline")
-    else:
-        lines.extend(f"- {{finding}}" for finding in findings)
-    output.write_text("\\n".join(lines) + "\\n", encoding="utf-8")
-
-
-def main() -> None:
-    parser = argparse.ArgumentParser(description="Validate operator-recorded HMI observations without changing settings.")
-    parser.add_argument("--observations", default="hmi_read_only_observations.csv", help="CSV with check,status,detail columns.")
-    parser.add_argument("--output", default="{target_slug}_read_only_hmi_report.txt", help="Output report path.")
-    args = parser.parse_args()
-
-    findings = evaluate_observations(Path(args.observations))
-    write_report(Path(args.output), findings)
-
-
-if __name__ == "__main__":
-    main()
-"""
-
-    def _build_approved_change_runbook(
+    def _build_operator_execution_runbook(
         self,
         target: str,
         local_files: Sequence[LocalContextFile],
@@ -886,18 +1274,18 @@ if __name__ == "__main__":
         indicators = sorted({indicator for item in local_files for indicator in item.indicators})
         evidence_links = [item.get("link", "") for item in web_docs[:8] if item.get("link")]
         lines = [
-            f"# Approved Change Runbook: {target}",
+            f"# Operator Execution Runbook: {target}",
             "",
             "This runbook is human-in-the-loop only. It is intended for approved manual changes and explicitly excludes automated writes through HMI, PLC, or protocol interfaces.",
             "",
             "## Preconditions",
             "",
-            "- Confirm written authorization and maintenance window approval.",
+            "- Confirm `pre_change_checklist.md` is complete.",
+            "- Confirm `proposed_hmi_change_set.json` has been reviewed and annotated with accepted/rejected items.",
             "- Confirm a current project backup and screenshot/export of relevant HMI settings.",
-            "- Confirm rollback owner, test owner, and sign-off owner.",
-            "- Confirm the read-only validation report has been collected.",
+            "- Confirm rollback owner, operator, and sign-off owner.",
             "",
-            "## Recommended Change Themes",
+            "## Execution Sequence",
             "",
         ]
         if indicators:
@@ -909,17 +1297,13 @@ if __name__ == "__main__":
                 "",
                 "## Manual Procedure Template",
                 "",
-                "1. Record the current value of the target setting in the change log.",
-                "2. Apply the approved value manually through the vendor-supported interface.",
-                "3. Capture screenshots or exports of the updated value.",
-                "4. Verify system state remains healthy and expected alarms/status remain normal.",
-                "5. Run the post-change verification script and attach the output to the change ticket.",
-                "",
-                "## Rollback Template",
-                "",
-                "1. Restore the previously recorded setting value.",
-                "2. Reapply the saved project or backup if a single-setting rollback is insufficient.",
-                "3. Re-run read-only validation and post-change verification to confirm restoration.",
+                "1. Open `proposed_hmi_change_set.json` and work through settings one at a time.",
+                "2. On the HMI, navigate to the setting indicated by `location_hint`.",
+                "3. Record the current value in the change log before editing.",
+                "4. Manually apply the approved value only after confirming it matches the accepted proposal.",
+                "5. Capture a screenshot or export showing the new value.",
+                "6. Pause after each setting to confirm the classroom system remains healthy and expected alarms/status remain normal.",
+                "7. When all accepted settings are complete, run the post-change verification script and attach the output to the exercise record.",
                 "",
                 "## Reference Links",
                 "",
@@ -929,6 +1313,26 @@ if __name__ == "__main__":
             lines.extend(f"- {link}" for link in evidence_links)
         else:
             lines.append("- None collected.")
+        return "\n".join(lines) + "\n"
+
+    def _build_rollback_plan(
+        self,
+        target: str,
+        local_files: Sequence[LocalContextFile],
+        web_docs: Sequence[Dict[str, str]],
+    ) -> str:
+        lines = [
+            f"# Rollback Plan: {target}",
+            "",
+            "Use this plan if a manual HMI change produces unexpected behavior.",
+            "",
+            "1. Stop applying additional settings immediately.",
+            "2. Restore the most recent recorded pre-change value for the affected setting.",
+            "3. If the setting cannot be restored individually, reload the saved classroom backup or project export using the vendor-supported process.",
+            "4. Confirm the system returns to the pre-change state using screenshots, exports, and status indicators.",
+            "5. Re-run the post-change verification script against the restored evidence and note which values were rolled back.",
+            "6. Document the rollback trigger, affected setting, and final restored state.",
+        ]
         return "\n".join(lines) + "\n"
 
     def _build_post_change_verification_script(
@@ -944,6 +1348,7 @@ if __name__ == "__main__":
 
 Authorized use only. This script validates recorded post-change evidence and
 does not send write operations to PLC or HMI systems.
+It is designed for offline evidence review only.
 \"\"\"
 
 from __future__ import annotations
@@ -1015,6 +1420,57 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 """
+
+    def _build_manifest(
+        self,
+        target: str,
+        local_files: Sequence[LocalContextFile],
+        web_docs: Sequence[Dict[str, str]],
+        queries: Sequence[str],
+    ) -> Dict[str, Any]:
+        modules = self._select_check_modules(target, local_files, web_docs)
+        return {
+            "target": target,
+            "generation_mode": "web-informed offline-only",
+            "safety_boundary": {
+                "allow_web_research_during_generation": True,
+                "allow_generated_artifact_network_access": False,
+                "allow_generated_artifact_plc_writes": False,
+                "allow_generated_artifact_hmi_writes": False,
+                "allowed_inputs": [
+                    "exported configuration files",
+                    "operator-supplied service inventory CSV files",
+                    "post-change evidence JSON files",
+                ],
+            },
+            "query_count": len(queries),
+            "local_context_files": [str(item.path) for item in local_files],
+            "local_signals": sorted({indicator for item in local_files for indicator in item.indicators}),
+            "selected_modules": [
+                {
+                    "module_id": module.module_id,
+                    "title": module.title,
+                    "rationale": module.rationale,
+                }
+                for module in modules
+            ],
+            "web_result_count": len(web_docs),
+        }
+
+    def _build_web_sources(self, web_docs: Sequence[Dict[str, str]]) -> List[Dict[str, str]]:
+        sources: List[Dict[str, str]] = []
+        for item in web_docs:
+            link = (item.get("link") or "").strip()
+            parsed = urlparse(link)
+            sources.append(
+                {
+                    "title": (item.get("title") or "").strip(),
+                    "link": link,
+                    "domain": parsed.netloc.lower(),
+                    "snippet": (item.get("snippet") or "").strip(),
+                }
+            )
+        return sources
 
 
 def build_argument_parser() -> argparse.ArgumentParser:
