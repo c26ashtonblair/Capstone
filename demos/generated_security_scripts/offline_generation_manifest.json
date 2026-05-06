@@ -38,6 +38,11 @@
       "rationale": "OT access should be narrowed to approved management paths."
     },
     {
+      "module_id": "web_transport_security",
+      "title": "Web management transport security",
+      "rationale": "If a web interface exists, plaintext transport should be flagged."
+    },
+    {
       "module_id": "industrial_protocol_review",
       "title": "Industrial protocol exposure review",
       "rationale": "Protocol availability should be documented and protected, especially Modbus-related paths."
@@ -48,5 +53,5 @@
       "rationale": "Version and diagnostic state should be captured in exported evidence for review."
     }
   ],
-  "web_result_count": 71
+  "web_result_count": 63
 }

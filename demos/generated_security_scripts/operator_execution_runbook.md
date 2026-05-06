@@ -26,10 +26,10 @@ This runbook is human-in-the-loop only. It is intended for approved manual chang
 ## Reference Links
 
 - https://www.nozominetworks.com/blog/breaking-the-encryption-analyzing-the-automationdirect-click-plus-plc-protocol
-- https://www.cisa.gov/news-events/ics-advisories/icsa-26-022-02
 - https://community.automationdirect.com/s/internal-database-security-advisory/a4GDp000000oojmMAA/sa00019
-- https://www.compliance-labs.com/topic/nist-sp-800-82/plc-security-boost-your-defenses-with-top-20-secure-practices/
-- https://fluchsfriction.medium.com/one-year-of-top-20-secure-plc-coding-practices-c2f0042ad4a2
-- https://www.cisa.gov/news-events/ics-advisories/icsa-25-266-01
-- https://support.rockwellautomation.com/app/answers/answer_view/a_id/546987/~/rockwell-automation-customer-hardening-guidelines
-- https://www.linkedin.com/pulse/proactive-steps-you-can-take-protect-plcs-from-cyber-attacks-kpasc
+- https://www.youtube.com/watch?v=6Ifj-R-s3jM
+- https://www.cybersecurity-help.cz/vdb/SB2021061704
+- https://www.cisa.gov/news-events/ics-advisories/icsa-23-201-01
+- https://www.linkedin.com/pulse/list-30-best-practices-secure-plc-programming-zohaib-jahan-supdf
+- https://www.youtube.com/watch?v=yMVz73Hvm_g
+- https://cache.industry.siemens.com/dl/files/842/109925842/att_1262081/v1/ONE_IndustrialCybersecurity_config_man_0124_en-US.pdf

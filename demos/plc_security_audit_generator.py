@@ -21,6 +21,11 @@ from sentence_transformers import CrossEncoder
 
 from web_search_tool import WebSearchTool
 
+try:
+    from fairlib import HuggingFaceAdapter
+except ImportError:
+    HuggingFaceAdapter = None
+
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("plc_security_audit_generator")
@@ -28,6 +33,24 @@ logger = logging.getLogger("plc_security_audit_generator")
 BASE_DIR = Path(__file__).resolve().parent
 DOCS_ROOT = BASE_DIR / "docs"
 OUTPUT_DIR = BASE_DIR / "generated_security_audit"
+SUPPORTED_DOC_SUFFIXES = {".md", ".txt", ".pdf", ".docx"}
+CHAT_SYSTEM_PROMPT = """
+You are a defensive PLC security audit assistant.
+Answer only with information supported by the retrieved knowledge-base and web context provided to you.
+If the answer is not supported by the provided context, say that it is not present in the knowledge base.
+Keep answers practical, concise, and clearly grounded in the retrieved sources.
+""".strip()
+
+
+class ChatMessage:
+    """Fallback ChatMessage shim for older fairlib versions."""
+
+    def __init__(self, role: str, content: str):
+        self.role = role
+        self.content = content
+
+    def to_dict(self):
+        return {"role": self.role, "content": self.content}
 
 
 def _load_env() -> str:
@@ -116,6 +139,18 @@ def _filter_relevant_web_docs(web_docs):
     return filtered or web_docs[:12]
 
 
+def _format_web_context(web_docs, max_items: int = 5) -> str:
+    if not web_docs:
+        return "No web retrieval results available."
+    lines = []
+    for idx, item in enumerate(web_docs[:max_items], start=1):
+        title = (item.get("title") or "Untitled").strip()
+        link = (item.get("link") or "NO_LINK").strip()
+        snippet = (item.get("snippet") or "NO_SNIPPET").strip()
+        lines.append(f"{idx}. {title}\nURL: {link}\nSnippet: {snippet}")
+    return "\n\n".join(lines)
+
+
 def _source_links(web_docs, max_links: int = 8):
     links = []
     for item in web_docs:
@@ -144,7 +179,30 @@ def _extract_indicators(local_context: str, web_docs) -> dict:
     return indicators
 
 
-def _setup_tools(serp_key: str):
+def _resolve_doc_files(doc_roots):
+    doc_files = []
+    for root in doc_roots:
+        resolved = Path(root).expanduser().resolve()
+        if not resolved.exists():
+            logger.warning("Skipping missing docs path: %s", resolved)
+            continue
+        if resolved.is_file() and resolved.suffix.lower() in SUPPORTED_DOC_SUFFIXES:
+            doc_files.append(resolved)
+            continue
+        if resolved.is_dir():
+            doc_files.extend(
+                path for path in sorted(resolved.rglob("*.*")) if path.suffix.lower() in SUPPORTED_DOC_SUFFIXES
+            )
+    deduped = []
+    seen = set()
+    for path in doc_files:
+        if path not in seen:
+            deduped.append(path)
+            seen.add(path)
+    return deduped
+
+
+def _setup_tools(serp_key: str, doc_roots):
     rag_cfg = getattr(settings, "rag_system", None)
 
     index_dir = Path(
@@ -180,11 +238,9 @@ def _setup_tools(serp_key: str):
     cross_encoder = CrossEncoder(cross_model)
     retriever = CrossEncoderRerankingRetriever(base=base_retriever, cross_encoder=cross_encoder, rerank_k=25)
 
-    doc_files = [
-        path for path in sorted(DOCS_ROOT.rglob("*.*")) if path.suffix.lower() in {".md", ".txt", ".pdf", ".docx"}
-    ]
+    doc_files = _resolve_doc_files(doc_roots)
     if not doc_files:
-        raise RuntimeError(f"No document files found under {DOCS_ROOT}")
+        raise RuntimeError(f"No supported document files found in: {', '.join(str(Path(p).resolve()) for p in doc_roots)}")
 
     processor = DocumentProcessor()
     all_documents = []
@@ -198,7 +254,16 @@ def _setup_tools(serp_key: str):
     if all_documents:
         long_term_memory.vector_store.add_documents(all_documents)
 
-    return KnowledgeBaseQueryTool(retriever), WebSearchTool(api_key=serp_key), index_dir
+    llm = None
+    if HuggingFaceAdapter is None:
+        logger.warning("HuggingFaceAdapter is unavailable; interactive answers will fall back to retrieval only.")
+    else:
+        try:
+            llm = HuggingFaceAdapter("dolphin3-qwen25-3b", auth_token="")
+        except Exception as exc:
+            logger.warning("Could not initialize chat model; interactive answers will fall back to retrieval only: %s", exc)
+
+    return KnowledgeBaseQueryTool(retriever), WebSearchTool(api_key=serp_key), llm, index_dir
 
 
 def _gather_context(question: str, knowledge_tool: KnowledgeBaseQueryTool, web_tool: WebSearchTool):
@@ -220,6 +285,94 @@ def _gather_context(question: str, knowledge_tool: KnowledgeBaseQueryTool, web_t
     local_docs = _extract_tool_result(local_payload)
     local_context = _format_local_context(local_docs)
     return local_context, web_docs
+
+
+async def _answer_with_knowledge_base(
+    question: str,
+    knowledge_tool: KnowledgeBaseQueryTool,
+    web_tool: WebSearchTool | None,
+    llm,
+    history,
+    use_web: bool = False,
+):
+    local_payload = knowledge_tool.use(question)
+    local_docs = _extract_tool_result(local_payload)
+    local_context = _format_local_context(local_docs)
+    web_docs = []
+    web_context = "Web context disabled for interactive mode."
+    if use_web and web_tool is not None:
+        web_payload = web_tool.use(question)
+        web_docs = _filter_relevant_web_docs(_dedupe_web_docs(_extract_tool_result(web_payload)))
+        web_context = _format_web_context(web_docs)
+
+    if llm is None:
+        return (
+            "Model-based chat is unavailable, so here are the most relevant knowledge-base excerpts:\n\n"
+            f"{local_context}\n\n"
+            f"{web_context if use_web else ''}"
+        )
+
+    history_text = ""
+    if history:
+        history_lines = []
+        for turn in history[-4:]:
+            history_lines.append(f"User: {turn['question']}")
+            history_lines.append(f"Assistant: {turn['answer']}")
+        history_text = "\n".join(history_lines)
+
+    prompt = (
+        f"Conversation so far:\n{history_text or 'No previous conversation.'}\n\n"
+        f"Current user question:\n{question}\n\n"
+        "Knowledge-base context:\n"
+        f"{local_context}\n\n"
+        "Web context:\n"
+        f"{web_context}\n\n"
+        "Answer the user using only the context above. "
+        "If the answer is partial, say what is known and what is missing. "
+        "End with a short 'Sources:' list using the source names from the context."
+    )
+
+    response = await llm.ainvoke(
+        [
+            ChatMessage(role="system", content=CHAT_SYSTEM_PROMPT),
+            ChatMessage(role="user", content=prompt),
+        ]
+    )
+    return response.content if hasattr(response, "content") else str(response)
+
+
+async def _interactive_chat_loop(
+    knowledge_tool: KnowledgeBaseQueryTool,
+    web_tool: WebSearchTool | None,
+    llm,
+    use_web: bool = False,
+):
+    print("\nInteractive knowledge-base mode")
+    print("Ask follow-up questions about the indexed docs.")
+    if use_web:
+        print("Fresh web search is enabled for each follow-up question.")
+    print("Type 'exit', 'quit', or press Ctrl-D to stop.\n")
+
+    history = []
+    while True:
+        try:
+            question = input("You> ").strip()
+        except EOFError:
+            print()
+            break
+
+        if not question:
+            continue
+        if question.lower() in {"exit", "quit"}:
+            break
+
+        try:
+            answer = await _answer_with_knowledge_base(question, knowledge_tool, web_tool, llm, history, use_web=use_web)
+            print(f"\nAgent>\n{answer}\n")
+            history.append({"question": question, "answer": answer})
+        except Exception as exc:
+            logger.error("Interactive chat failed for question '%s': %s", question, exc, exc_info=True)
+            print("\nAgent>\nUnable to answer that question from the current knowledge base.\n")
 
 
 def _write_outputs(question: str, local_context: str, web_docs, out_dir: Path):
@@ -384,15 +537,34 @@ async def main():
         default=str(OUTPUT_DIR),
         help="Directory where generated scripts/checklists will be written.",
     )
+    parser.add_argument(
+        "--docs-path",
+        action="append",
+        default=[],
+        help="Additional document file or directory to index. Repeat this flag to include multiple sources.",
+    )
+    parser.add_argument(
+        "--interactive",
+        action="store_true",
+        help="Keep the agent running after generation so you can ask follow-up questions against the knowledge base.",
+    )
+    parser.add_argument(
+        "--interactive-web",
+        action="store_true",
+        help="During interactive mode, include fresh web search context for each follow-up question.",
+    )
     args = parser.parse_args()
 
+    doc_roots = [DOCS_ROOT, *args.docs_path]
     serp_key = _load_env()
-    knowledge_tool, web_tool, index_dir = _setup_tools(serp_key)
+    knowledge_tool, web_tool, llm, index_dir = _setup_tools(serp_key, doc_roots)
 
     try:
         local_context, web_docs = _gather_context(args.question, knowledge_tool, web_tool)
         _write_outputs(args.question, local_context, web_docs, Path(args.output_dir))
         logger.info("Generated defensive artifacts in: %s", Path(args.output_dir).resolve())
+        if args.interactive:
+            await _interactive_chat_loop(knowledge_tool, web_tool, llm, use_web=args.interactive_web)
     finally:
         try:
             if index_dir.exists() and index_dir.is_dir():

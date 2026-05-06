@@ -15,5 +15,6 @@ Complete this checklist before a trained operator makes any manual HMI changes.
 - `default_accounts_review` | Default account review
 - `password_policy` | Password policy strength
 - `segmentation_and_subnets` | Segmentation and management subnet restrictions
+- `web_transport_security` | Web management transport security
 - `industrial_protocol_review` | Industrial protocol exposure review
 - `firmware_and_diagnostics` | Firmware and diagnostic evidence capture

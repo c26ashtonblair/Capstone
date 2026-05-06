@@ -5,6 +5,7 @@
     "default_accounts_review",
     "password_policy",
     "segmentation_and_subnets",
+    "web_transport_security",
     "industrial_protocol_review",
     "firmware_and_diagnostics"
   ],
@@ -55,6 +56,22 @@
       ],
       "operator_action": "Restrict management access to the approved classroom engineering subnet.",
       "rationale": "OT access should be narrowed to approved management paths."
+    },
+    {
+      "setting_id": "services.web.enabled",
+      "location_hint": "Embedded web management configuration",
+      "current_value": "TO_BE_RECORDED_BY_OPERATOR",
+      "proposed_value": "REVIEW_REQUIRED",
+      "operator_action": "If web management is not needed, disable it. If needed, keep it restricted to approved management paths.",
+      "rationale": "If a web interface exists, plaintext transport should be flagged."
+    },
+    {
+      "setting_id": "services.tls.enabled",
+      "location_hint": "Embedded web management configuration",
+      "current_value": "TO_BE_RECORDED_BY_OPERATOR",
+      "proposed_value": true,
+      "operator_action": "Enable TLS or equivalent secure transport if web management remains enabled.",
+      "rationale": "If a web interface exists, plaintext transport should be flagged."
     },
     {
       "setting_id": "services.modbus.enabled",
